@@ -27,6 +27,42 @@ mixin _$MovieViewModel on _MovieViewModelBase, Store {
     });
   }
 
+  late final _$isFetchingMoreAtom = Atom(
+    name: '_MovieViewModelBase.isFetchingMore',
+    context: context,
+  );
+
+  @override
+  bool get isFetchingMore {
+    _$isFetchingMoreAtom.reportRead();
+    return super.isFetchingMore;
+  }
+
+  @override
+  set isFetchingMore(bool value) {
+    _$isFetchingMoreAtom.reportWrite(value, super.isFetchingMore, () {
+      super.isFetchingMore = value;
+    });
+  }
+
+  late final _$currentPageAtom = Atom(
+    name: '_MovieViewModelBase.currentPage',
+    context: context,
+  );
+
+  @override
+  int get currentPage {
+    _$currentPageAtom.reportRead();
+    return super.currentPage;
+  }
+
+  @override
+  set currentPage(int value) {
+    _$currentPageAtom.reportWrite(value, super.currentPage, () {
+      super.currentPage = value;
+    });
+  }
+
   late final _$moviesAtom = Atom(
     name: '_MovieViewModelBase.movies',
     context: context,
@@ -42,6 +78,42 @@ mixin _$MovieViewModel on _MovieViewModelBase, Store {
   set movies(List<MovieModel> value) {
     _$moviesAtom.reportWrite(value, super.movies, () {
       super.movies = value;
+    });
+  }
+
+  late final _$selectedMoviesAtom = Atom(
+    name: '_MovieViewModelBase.selectedMovies',
+    context: context,
+  );
+
+  @override
+  ObservableList<MovieModel> get selectedMovies {
+    _$selectedMoviesAtom.reportRead();
+    return super.selectedMovies;
+  }
+
+  @override
+  set selectedMovies(ObservableList<MovieModel> value) {
+    _$selectedMoviesAtom.reportWrite(value, super.selectedMovies, () {
+      super.selectedMovies = value;
+    });
+  }
+
+  late final _$selectedGenresAtom = Atom(
+    name: '_MovieViewModelBase.selectedGenres',
+    context: context,
+  );
+
+  @override
+  ObservableList<GenreModel> get selectedGenres {
+    _$selectedGenresAtom.reportRead();
+    return super.selectedGenres;
+  }
+
+  @override
+  set selectedGenres(ObservableList<GenreModel> value) {
+    _$selectedGenresAtom.reportWrite(value, super.selectedGenres, () {
+      super.selectedGenres = value;
     });
   }
 
@@ -73,11 +145,54 @@ mixin _$MovieViewModel on _MovieViewModelBase, Store {
     return _$fetchMoviesAsyncAction.run(() => super.fetchMovies());
   }
 
+  late final _$fetchMoreMoviesAsyncAction = AsyncAction(
+    '_MovieViewModelBase.fetchMoreMovies',
+    context: context,
+  );
+
+  @override
+  Future<void> fetchMoreMovies() {
+    return _$fetchMoreMoviesAsyncAction.run(() => super.fetchMoreMovies());
+  }
+
+  late final _$_MovieViewModelBaseActionController = ActionController(
+    name: '_MovieViewModelBase',
+    context: context,
+  );
+
+  @override
+  void toggleMovie(MovieModel movie) {
+    final _$actionInfo = _$_MovieViewModelBaseActionController.startAction(
+      name: '_MovieViewModelBase.toggleMovie',
+    );
+    try {
+      return super.toggleMovie(movie);
+    } finally {
+      _$_MovieViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void toggleGenre(GenreModel genre) {
+    final _$actionInfo = _$_MovieViewModelBaseActionController.startAction(
+      name: '_MovieViewModelBase.toggleGenre',
+    );
+    try {
+      return super.toggleGenre(genre);
+    } finally {
+      _$_MovieViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 isLoading: ${isLoading},
+isFetchingMore: ${isFetchingMore},
+currentPage: ${currentPage},
 movies: ${movies},
+selectedMovies: ${selectedMovies},
+selectedGenres: ${selectedGenres},
 errorMessage: ${errorMessage}
     ''';
   }

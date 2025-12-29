@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:movie_app_task/data/model/movie_model.dart';
+import 'package:movie_app_task/data/model/genre_model.dart';
 import 'package:movie_app_task/data/repository/movie_repository.dart';
 
 part 'movie_view_model.g.dart';
@@ -13,22 +14,74 @@ abstract class _MovieViewModelBase with Store {
   bool isLoading = false;
 
   @observable
+  bool isFetchingMore = false;
+
+  @observable
+  int currentPage = 1;
+
+  @observable
   List<MovieModel> movies = [];
+
+  @observable
+  ObservableList<MovieModel> selectedMovies = ObservableList();
+
+  @observable
+  ObservableList<GenreModel> selectedGenres = ObservableList();
 
   @observable
   String? errorMessage;
 
+  // İlk yükleme
   @action
   Future<void> fetchMovies() async {
     isLoading = true;
     errorMessage = null;
-
     try {
-      movies = await repository.getPopularMovies();
+      currentPage = 1;
+      movies = await repository.getPopularMovies(page: currentPage);
     } catch (e) {
       errorMessage = e.toString();
     } finally {
       isLoading = false;
+    }
+  }
+
+  // Infinity scroll
+  @action
+  Future<void> fetchMoreMovies() async {
+    if (isFetchingMore) return;
+
+    isFetchingMore = true;
+    try {
+      final newMovies = await repository.getPopularMovies(
+        page: currentPage + 1,
+      );
+      currentPage++;
+      movies = [...movies, ...newMovies];
+    } finally {
+      isFetchingMore = false;
+    }
+  }
+
+  @action
+  void toggleMovie(MovieModel movie) {
+    if (selectedMovies.contains(movie)) {
+      selectedMovies.remove(movie);
+    } else {
+      if (selectedMovies.length < 3) {
+        selectedMovies.add(movie);
+      }
+    }
+  }
+
+  @action
+  void toggleGenre(GenreModel genre) {
+    if (selectedGenres.contains(genre)) {
+      selectedGenres.remove(genre);
+    } else {
+      if (selectedGenres.length < 2) {
+        selectedGenres.add(genre);
+      }
     }
   }
 }

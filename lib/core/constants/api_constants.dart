@@ -6,5 +6,5 @@ class ApiConstants {
   static String get imageBaseUrl => dotenv.env['TMDB_IMAGE_URL']!;
 
   //Movie Endpoints
-  static String get getPopularMovies => "/movie/popular";
+  static String popularMovies({int page = 1}) => "/movie/popular?page=$page";
 }

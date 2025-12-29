@@ -5,8 +5,10 @@ import 'package:movie_app_task/data/model/movie_model.dart';
 class MovieRepository {
   final DioClient _dioClient = DioClient();
 
-  Future<List<MovieModel>> getPopularMovies() async {
-    final response = await _dioClient.dio.get(ApiConstants.getPopularMovies);
+  Future<List<MovieModel>> getPopularMovies({int page = 1}) async {
+    final response = await _dioClient.dio.get(
+      ApiConstants.popularMovies(page: page),
+    );
 
     return (response.data['results'] as List)
         .map((e) => MovieModel.fromJson(e))
