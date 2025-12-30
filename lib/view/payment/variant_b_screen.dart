@@ -57,7 +57,7 @@ class VariantB extends StatelessWidget {
                   children: [
                     // App Name
                     Text(
-                      "AppName",
+                      "MovieAI",
                       style: TextStyle(
                         fontSize: 32.sp,
                         fontWeight: FontWeight.bold,

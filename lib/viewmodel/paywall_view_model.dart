@@ -9,8 +9,7 @@ enum PaywallVariant { variantA, variantB }
 class PaywallViewModel = _PaywallViewModelBase with _$PaywallViewModel;
 
 abstract class _PaywallViewModelBase with Store {
-  @observable
-  PaywallVariant activeVariant = PaywallVariant.variantA;
+  late final PaywallVariant activeVariant;
 
   @observable
   bool isFreeTrialEnabled = false;
@@ -21,17 +20,14 @@ abstract class _PaywallViewModelBase with Store {
   ObservableList<SubscriptionPlan> plans = ObservableList();
 
   _PaywallViewModelBase() {
-    _determineVariant();
+    activeVariant = _determineVariant();
     _initPlans();
   }
 
   @action
-  void _determineVariant() {
-    activeVariant = PaywallVariant.variantA;
-    return;
+  PaywallVariant _determineVariant() {
     final random = Random();
-    activeVariant =
-        PaywallVariant.values[random.nextInt(PaywallVariant.values.length)];
+    return PaywallVariant.values[random.nextInt(PaywallVariant.values.length)];
   }
 
   @action

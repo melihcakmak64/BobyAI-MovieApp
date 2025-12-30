@@ -27,6 +27,8 @@ class PricingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: onTap,
       child: Stack(
         clipBehavior: Clip.none,
@@ -36,7 +38,6 @@ class PricingCard extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(
                 color: isSelected ? AppColors.redLight : AppColors.grayDark,
-                width: 1.w,
               ),
               borderRadius: BorderRadius.circular(12.r),
             ),
@@ -46,8 +47,11 @@ class PricingCard extends StatelessWidget {
                   width: 16.w,
                   height: 16.w,
                   decoration: BoxDecoration(
+                    border: Border.all(
+                      color: isSelected ? AppColors.redLight : AppColors.white,
+                    ),
                     shape: BoxShape.circle,
-                    color: isSelected ? AppColors.redLight : AppColors.white,
+                    color: isSelected ? AppColors.redLight : AppColors.black,
                   ),
                   child: isSelected
                       ? Icon(Icons.check, color: Colors.white, size: 12.w)

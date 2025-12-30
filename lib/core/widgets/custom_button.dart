@@ -6,12 +6,14 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final bool isDark;
+  final IconData? trailingIcon;
 
   const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.isDark = true,
+    this.trailingIcon,
   });
 
   @override
@@ -25,13 +27,28 @@ class CustomButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 16.sp,
-          color: isDark ? AppColors.gray : AppColors.white,
-        ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Text(
+            textAlign: TextAlign.center,
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16.sp,
+              color: isDark ? AppColors.gray : AppColors.white,
+            ),
+          ),
+          if (trailingIcon != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Icon(
+                trailingIcon,
+                color: isDark ? AppColors.gray : AppColors.white,
+                size: 24.sp,
+              ),
+            ),
+        ],
       ),
     );
   }

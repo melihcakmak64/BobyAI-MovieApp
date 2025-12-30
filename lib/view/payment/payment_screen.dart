@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:movie_app_task/view/payment/variant_a_screen.dart';
 import 'package:movie_app_task/view/payment/variant_b_screen.dart';
 import 'package:movie_app_task/viewmodel/paywall_view_model.dart';
 
-class PaywallScreen extends StatelessWidget {
-  final PaywallViewModel viewModel = PaywallViewModel();
+class PaywallScreen extends StatefulWidget {
+  @override
+  State<PaywallScreen> createState() => _PaywallScreenState();
+}
+
+class _PaywallScreenState extends State<PaywallScreen> {
+  late final PaywallViewModel viewModel;
+  @override
+  void initState() {
+    viewModel = PaywallViewModel();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Observer(
-        builder: (_) {
-          switch (viewModel.activeVariant) {
-            case PaywallVariant.variantA:
-              return VariantA(viewModel: viewModel);
-            case PaywallVariant.variantB:
-              return VariantB(viewModel: viewModel);
-          }
-        },
-      ),
+      body: switch (viewModel.activeVariant) {
+        PaywallVariant.variantA => VariantA(viewModel: viewModel),
+        PaywallVariant.variantB => VariantB(viewModel: viewModel),
+      },
     );
   }
 }

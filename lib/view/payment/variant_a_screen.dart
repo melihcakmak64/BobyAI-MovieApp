@@ -17,7 +17,7 @@ class VariantA extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
+        child: Stack(
           children: [
             // Header
             Align(
@@ -29,17 +29,16 @@ class VariantA extends StatelessWidget {
             ),
 
             Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  "AppName",
+                  "MovieAI",
                   style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
                   ),
                 ),
-
-                SizedBox(height: 30.h),
+                16.verticalSpace,
 
                 // Table Container
                 Column(
@@ -56,7 +55,6 @@ class VariantA extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -69,7 +67,6 @@ class VariantA extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -84,7 +81,7 @@ class VariantA extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 24.h),
+                SizedBox(height: 28.h),
 
                 // Free Trial Toggle
                 Container(
@@ -159,10 +156,17 @@ class VariantA extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 20.h),
-                CustomButton(
-                  text: "No Payment Now",
-                  onPressed: () => viewModel.purchaseSubscription(),
+                SizedBox(height: 12.h),
+                Observer(
+                  builder: (_) {
+                    return CustomButton(
+                      text: viewModel.isFreeTrialEnabled
+                          ? "3 Days Free\nNo Payment Now"
+                          : "Unlock MovieAI PRO",
+                      onPressed: () => viewModel.purchaseSubscription(),
+                      trailingIcon: Icons.arrow_forward,
+                    );
+                  },
                 ),
                 SizedBox(height: 16.h),
 
@@ -175,8 +179,6 @@ class VariantA extends StatelessWidget {
                     _buildFooterLink("Privacy Policy"),
                   ],
                 ),
-
-                SizedBox(height: 20.h),
               ],
             ),
           ],
@@ -186,57 +188,49 @@ class VariantA extends StatelessWidget {
   }
 
   Widget _buildFeatureRow(String title, bool isFree, bool isPro) {
-    return Row(
-      children: [
-        // Feature Name
-        Expanded(
-          flex: 3,
-          child: Text(
-            title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
+    return Padding(
+      padding: EdgeInsetsGeometry.symmetric(vertical: 3.5.h),
+      child: Row(
+        children: [
+          // Feature Name
+          Expanded(
+            flex: 3,
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
             ),
           ),
-        ),
-        // FREE Column
-        Expanded(
-          flex: 1,
-          child: Center(
-            child: Icon(
-              isFree ? Icons.check_circle : Icons.cancel,
-              color: isFree ? Colors.green : Colors.grey[700],
-              size: 24.w,
+          // FREE Column
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Icon(
+                isFree ? Icons.check_circle : Icons.cancel,
+                color: isFree ? AppColors.green : AppColors.gray,
+                size: 24.w,
+              ),
             ),
           ),
-        ),
-        // PRO Column
-        Expanded(
-          flex: 1,
-          child: Center(
-            child: Icon(
-              isPro ? Icons.check_circle : Icons.cancel,
-              color: isPro ? Colors.green : Colors.grey[700],
-              size: 24.w,
+          // PRO Column
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Icon(
+                isPro ? Icons.check_circle : Icons.cancel,
+                color: isPro ? AppColors.green : AppColors.gray,
+                size: 24.w,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildFooterLink(String text) {
     return InkWell(
       onTap: () {},
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 11.sp,
-          color: Colors.white70,
-          decoration: TextDecoration.underline,
-        ),
-      ),
+      child: Text(text, style: TextStyle(fontSize: 8.sp)),
     );
   }
 }
