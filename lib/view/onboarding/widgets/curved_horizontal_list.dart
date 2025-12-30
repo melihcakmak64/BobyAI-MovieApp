@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:movie_app_task/core/constants/api_constants.dart';
 import 'package:movie_app_task/core/widgets/movie_poster_container.dart';
 import 'package:movie_app_task/domain/model/movie_model.dart';
 import 'package:movie_app_task/viewmodel/movie_view_model.dart';
@@ -72,7 +71,7 @@ class _CurvedHorizontalListState extends State<CurvedHorizontalList> {
               );
 
               return MoviePosterContainer(
-                imagePath: "${ApiConstants.imageBaseUrl}${movie.posterPath}",
+                imagePath: movie.posterPath ?? "",
                 isSelected: isSelected,
                 onTap: () => widget.viewModel.toggleMovie(movie),
               );

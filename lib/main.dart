@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_theme.dart';
+import 'package:movie_app_task/view/home/home_screen.dart';
 import 'package:movie_app_task/view/payment/payment_screen.dart';
 
 Future<void> main() async {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: appTheme,
-          home: PaywallScreen(),
+          home: HomeScreen(),
         );
       },
     );

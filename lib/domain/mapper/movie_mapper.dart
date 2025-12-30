@@ -1,3 +1,4 @@
+import 'package:movie_app_task/core/constants/api_constants.dart';
 import 'package:movie_app_task/data/dtos/movie_dto.dart';
 import 'package:movie_app_task/domain/model/movie_model.dart';
 
@@ -7,7 +8,7 @@ extension MovieDtoMapper on MovieDto {
       id: id,
       title: title,
       overview: overview,
-      posterPath: posterPath,
+      posterPath: "${ApiConstants.imageBaseUrl}$posterPath",
       rating: rating,
     );
   }

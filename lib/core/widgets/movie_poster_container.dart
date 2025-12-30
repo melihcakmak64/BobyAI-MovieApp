@@ -24,11 +24,14 @@ class MoviePosterContainer extends StatelessWidget {
       onTap: onTap,
       child: Stack(
         children: [
-          ImageHelper.network(
-            imagePath,
-            height: height ?? 252.h,
-            width: width ?? 180.w,
-            fit: BoxFit.fill,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: ImageHelper.network(
+              imagePath,
+              height: height ?? 252.h,
+              width: width ?? 180.w,
+              fit: BoxFit.fill,
+            ),
           ),
 
           if (isSelected)
