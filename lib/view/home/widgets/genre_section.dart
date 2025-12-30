@@ -17,7 +17,7 @@ class GenreSection extends StatelessWidget {
         Text(title, style: TextStyle(fontSize: 20.sp)),
         12.verticalSpace,
         SizedBox(
-          height: 176,
+          height: 140.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: movies.length,
@@ -36,4 +36,3 @@ class GenreSection extends StatelessWidget {
     );
   }
 }
-

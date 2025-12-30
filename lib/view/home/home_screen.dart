@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/domain/model/genre_model.dart';
 import 'package:movie_app_task/view/home/widgets/circle_movie_container.dart';
+import 'package:movie_app_task/view/home/widgets/genre_chip.dart';
 import 'package:movie_app_task/view/home/widgets/genre_section.dart';
 import 'package:movie_app_task/viewmodel/movie_view_model.dart';
-import 'package:movie_app_task/domain/model/genre_model.dart';
 
 class HomeScreen extends StatefulWidget {
   final MovieViewModel viewModel;
@@ -25,26 +26,29 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      widget.viewModel.fetchMovies();
-      widget.viewModel.fetchMoviesForSelectedGenres();
-    });
+    Future.microtask(() async {
+      await widget.viewModel.fetchMovies();
+      await widget.viewModel.fetchMoviesForSelectedGenres();
 
-    for (int i = 0; i < GenreModel.mockGenres.length; i++) {
-      _sectionKeys[i] = GlobalKey();
-    }
+      for (int i = 0; i < widget.viewModel.genres.length; i++) {
+        _sectionKeys[i] = GlobalKey();
+      }
+      setState(() {});
+    });
 
     _scrollController.addListener(_onScroll);
   }
 
   void _onScroll() {
-    for (int i = 0; i < GenreModel.mockGenres.length; i++) {
-      final keyContext = _sectionKeys[i]!.currentContext;
+    final genres = widget.viewModel.genres;
+
+    for (int i = 0; i < genres.length; i++) {
+      final keyContext = _sectionKeys[i]?.currentContext;
       if (keyContext != null) {
         final box = keyContext.findRenderObject() as RenderBox;
         final offset = box.localToGlobal(Offset.zero).dy;
 
-        if (offset < 100 && offset > -100) {
+        if (offset < 250 && offset > -250) {
           if (activeGenreIndex != i) {
             setState(() => activeGenreIndex = i);
           }
@@ -68,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.black,
       body: SafeArea(
         child: Observer(
           builder: (_) {
@@ -76,12 +80,33 @@ class _HomeScreenState extends State<HomeScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            return CustomScrollView(
-              controller: _scrollController,
-              slivers: [
+            return Column(
+              children: [
                 _buildHeader(),
-                _buildGenreChips(),
-                _buildGenreSections(),
+                Divider(height: 1.h, color: Colors.grey),
+                16.verticalSpace,
+                _buildMoviesSection(),
+                12.verticalSpace,
+                _buildGenreChips(widget.viewModel.genres),
+                Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: widget.viewModel.genres.length,
+                    itemBuilder: (_, index) {
+                      final genre = widget.viewModel.genres.elementAt(index);
+                      final movies = widget.viewModel.movies;
+
+                      return Padding(
+                        padding: EdgeInsetsGeometry.only(top: 24.h, left: 16.w),
+                        child: GenreSection(
+                          key: _sectionKeys[index],
+                          title: genre.name,
+                          movies: movies,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             );
           },
@@ -92,121 +117,75 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ---------------- HEADER ----------------
 
-  SliverToBoxAdapter _buildHeader() {
-    return SliverToBoxAdapter(
+  Widget _buildHeader() {
+    return Padding(
+      padding: EdgeInsets.only(top: 26.h, left: 20.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 20.h, left: 20.w),
-            child: Column(
-              spacing: 20.h,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "For You ⭐",
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 80.h,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: widget.viewModel.recommendedMovies.length,
-                    separatorBuilder: (_, __) => 20.horizontalSpace,
-                    itemBuilder: (_, index) {
-                      final movie = widget.viewModel.recommendedMovies[index];
-                      return CircleMovieContainer(movie: movie);
-                    },
-                  ),
-                ),
-              ],
+          Text(
+            "For You ⭐",
+            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+          ),
+          20.verticalSpace,
+          SizedBox(
+            height: 80.h,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.viewModel.recommendedMovies.length,
+              separatorBuilder: (_, __) => 20.horizontalSpace,
+              itemBuilder: (_, index) {
+                final movie = widget.viewModel.recommendedMovies[index];
+                return CircleMovieContainer(movie: movie);
+              },
             ),
           ),
           20.verticalSpace,
-          Divider(height: 1.h),
-          Padding(
-            padding: EdgeInsets.only(left: 20.w),
-            child: Text(
-              "Movies 🎬",
-              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-            ),
-          ),
-          16.verticalSpace,
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 16.h),
-            child: _SearchBar(),
-          ),
-          12.verticalSpace,
         ],
       ),
     );
   }
 
-  // ---------------- GENRE CHIPS ----------------
+  // ---------------- Movies - Search Section ----------------
 
-  SliverPersistentHeader _buildGenreChips() {
-    return SliverPersistentHeader(
-      pinned: true,
-      delegate: _GenreHeaderDelegate(
-        minHeight: 32.h,
-        maxHeight: 32.h,
-        child: Container(
-          padding: EdgeInsets.only(left: 20.w),
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: GenreModel.mockGenres.length,
-            separatorBuilder: (_, __) => 12.horizontalSpace,
-            itemBuilder: (_, index) {
-              final genre = GenreModel.mockGenres[index];
-              final isActive = index == activeGenreIndex;
-
-              return GestureDetector(
-                onTap: () => _scrollToGenre(index),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 6.5.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isActive ? AppColors.redLight : AppColors.gray,
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  child: Text(
-                    genre.name,
-                    style: TextStyle(
-                      color: isActive ? AppColors.white : AppColors.black,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                ),
-              );
-            },
+  Widget _buildMoviesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Text(
+            "Movies 🎬",
+            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
           ),
         ),
-      ),
+        16.verticalSpace,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+          child: _SearchBar(),
+        ),
+      ],
     );
   }
 
-  // ---------------- SECTIONS ----------------
+  // ---------------- GENRE CHIPS ----------------
 
-  SliverList _buildGenreSections() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        childCount: widget.viewModel.genres.length,
-        (context, index) {
-          final genre = widget.viewModel.genres[index];
-          final movies = widget.viewModel.movies;
+  Widget _buildGenreChips(List<GenreModel> genres) {
+    return Container(
+      height: 32.h,
+      padding: EdgeInsets.only(left: 20.w),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: genres.length,
+        separatorBuilder: (_, __) => 12.horizontalSpace,
+        itemBuilder: (_, index) {
+          final genre = genres[index];
+          final isActive = index == activeGenreIndex;
 
-          return Padding(
-            padding: EdgeInsets.only(top: 24.h, left: 16.w),
-            child: GenreSection(
-              key: _sectionKeys[index],
-              title: genre.name,
-              movies: movies,
-            ),
+          return GenreChip(
+            label: genre.name,
+            isActive: isActive,
+            onTap: () => _scrollToGenre(index),
           );
         },
       ),
@@ -222,51 +201,19 @@ class _SearchBar extends StatelessWidget {
 
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
-          Icon(Icons.search, color: Colors.grey),
+          Icon(Icons.search, color: AppColors.grayDark),
           6.horizontalSpace,
           Expanded(
-            child: Text("Search", style: TextStyle(color: Colors.grey)),
+            child: Text("Search", style: TextStyle(color: AppColors.grayDark)),
           ),
-          Icon(Icons.mic, color: Colors.grey),
+          Icon(Icons.mic, color: AppColors.grayDark),
         ],
       ),
     );
-  }
-}
-
-class _GenreHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  _GenreHeaderDelegate({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.child,
-  });
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => maxHeight;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return child;
-  }
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
   }
 }
