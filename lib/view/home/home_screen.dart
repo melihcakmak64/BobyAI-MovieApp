@@ -8,14 +8,14 @@ import 'package:movie_app_task/viewmodel/movie_view_model.dart';
 import 'package:movie_app_task/domain/model/genre_model.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final MovieViewModel viewModel;
+  const HomeScreen({super.key, required this.viewModel});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final MovieViewModel viewModel = MovieViewModel();
   final ScrollController _scrollController = ScrollController();
 
   final Map<int, GlobalKey> _sectionKeys = {};
@@ -25,7 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    viewModel.fetchMovies();
+    Future.microtask(() {
+      widget.viewModel.fetchMovies();
+      widget.viewModel.fetchMoviesForSelectedGenres();
+    });
 
     for (int i = 0; i < GenreModel.mockGenres.length; i++) {
       _sectionKeys[i] = GlobalKey();
@@ -69,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Observer(
           builder: (_) {
-            if (viewModel.isLoading) {
+            if (widget.viewModel.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -111,10 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 80.h,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemCount: viewModel.movies.take(10).length,
+                    itemCount: widget.viewModel.recommendedMovies.length,
                     separatorBuilder: (_, __) => 20.horizontalSpace,
                     itemBuilder: (_, index) {
-                      final movie = viewModel.movies[index];
+                      final movie = widget.viewModel.recommendedMovies[index];
                       return CircleMovieContainer(movie: movie);
                     },
                   ),
@@ -192,10 +195,10 @@ class _HomeScreenState extends State<HomeScreen> {
   SliverList _buildGenreSections() {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        childCount: GenreModel.mockGenres.length,
+        childCount: widget.viewModel.genres.length,
         (context, index) {
-          final genre = GenreModel.mockGenres[index];
-          final movies = viewModel.movies.take(9).toList();
+          final genre = widget.viewModel.genres[index];
+          final movies = widget.viewModel.movies;
 
           return Padding(
             padding: EdgeInsets.only(top: 24.h, left: 16.w),

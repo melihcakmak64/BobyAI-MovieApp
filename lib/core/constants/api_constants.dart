@@ -7,4 +7,6 @@ class ApiConstants {
 
   //Movie Endpoints
   static String popularMovies({int page = 1}) => "/movie/popular?page=$page";
+  static String get discoverMovies => "/discover/movie";
+  static String get genres => "/genre/movie/list";
 }

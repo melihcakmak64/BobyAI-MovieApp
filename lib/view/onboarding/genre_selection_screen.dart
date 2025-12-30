@@ -3,18 +3,29 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
-import 'package:movie_app_task/domain/model/genre_model.dart';
+import 'package:movie_app_task/view/home/home_screen.dart';
 import 'package:movie_app_task/view/onboarding/widgets/genre_container.dart';
 import 'package:movie_app_task/viewmodel/movie_view_model.dart';
 
-class GenreSelectionScreen extends StatelessWidget {
+class GenreSelectionScreen extends StatefulWidget {
   final MovieViewModel viewModel;
 
   const GenreSelectionScreen({super.key, required this.viewModel});
 
   @override
+  State<GenreSelectionScreen> createState() => _GenreSelectionScreenState();
+}
+
+class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget.viewModel.fetchGenres();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final genres = GenreModel.mockGenres;
+    final viewModel = widget.viewModel;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -60,25 +71,37 @@ class GenreSelectionScreen extends StatelessWidget {
 
                   // Grid Section
                   Expanded(
-                    child: GridView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 1,
-                        mainAxisSpacing: 24.h,
-                        crossAxisSpacing: 55.w,
-                      ),
-                      itemCount: genres.length,
-                      itemBuilder: (_, index) {
-                        final genre = genres[index];
-                        return Observer(
-                          builder: (_) => GenreContainer(
-                            genre: genre,
-                            isSelected: viewModel.selectedGenres.contains(
-                              genre,
+                    child: Observer(
+                      builder: (_) {
+                        if (viewModel.genres.isEmpty || viewModel.isLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
                             ),
-                            onTap: () => viewModel.toggleGenre(genre),
-                          ),
+                          );
+                        }
+                        return GridView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1,
+                                mainAxisSpacing: 24.h,
+                                crossAxisSpacing: 55.w,
+                              ),
+                          itemCount: viewModel.genres.length,
+                          itemBuilder: (_, index) {
+                            final genre = viewModel.genres[index];
+                            return Observer(
+                              builder: (_) => GenreContainer(
+                                genre: genre,
+                                isSelected: viewModel.selectedGenres.contains(
+                                  genre,
+                                ),
+                                onTap: () => viewModel.toggleGenre(genre),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
@@ -92,7 +115,14 @@ class GenreSelectionScreen extends StatelessWidget {
                 child: Observer(
                   builder: (_) => CustomButton(
                     text: "Continue",
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => HomeScreen(viewModel: viewModel),
+                        ),
+                      );
+                    },
                     isDark: viewModel.selectedGenres.length < 2,
                   ),
                 ),

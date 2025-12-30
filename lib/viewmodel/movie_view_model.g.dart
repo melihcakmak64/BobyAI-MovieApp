@@ -81,6 +81,42 @@ mixin _$MovieViewModel on _MovieViewModelBase, Store {
     });
   }
 
+  late final _$recommendedMoviesAtom = Atom(
+    name: '_MovieViewModelBase.recommendedMovies',
+    context: context,
+  );
+
+  @override
+  List<MovieModel> get recommendedMovies {
+    _$recommendedMoviesAtom.reportRead();
+    return super.recommendedMovies;
+  }
+
+  @override
+  set recommendedMovies(List<MovieModel> value) {
+    _$recommendedMoviesAtom.reportWrite(value, super.recommendedMovies, () {
+      super.recommendedMovies = value;
+    });
+  }
+
+  late final _$genresAtom = Atom(
+    name: '_MovieViewModelBase.genres',
+    context: context,
+  );
+
+  @override
+  ObservableList<GenreModel> get genres {
+    _$genresAtom.reportRead();
+    return super.genres;
+  }
+
+  @override
+  set genres(ObservableList<GenreModel> value) {
+    _$genresAtom.reportWrite(value, super.genres, () {
+      super.genres = value;
+    });
+  }
+
   late final _$selectedMoviesAtom = Atom(
     name: '_MovieViewModelBase.selectedMovies',
     context: context,
@@ -145,6 +181,16 @@ mixin _$MovieViewModel on _MovieViewModelBase, Store {
     return _$fetchMoviesAsyncAction.run(() => super.fetchMovies());
   }
 
+  late final _$fetchGenresAsyncAction = AsyncAction(
+    '_MovieViewModelBase.fetchGenres',
+    context: context,
+  );
+
+  @override
+  Future<void> fetchGenres() {
+    return _$fetchGenresAsyncAction.run(() => super.fetchGenres());
+  }
+
   late final _$fetchMoreMoviesAsyncAction = AsyncAction(
     '_MovieViewModelBase.fetchMoreMovies',
     context: context,
@@ -153,6 +199,18 @@ mixin _$MovieViewModel on _MovieViewModelBase, Store {
   @override
   Future<void> fetchMoreMovies() {
     return _$fetchMoreMoviesAsyncAction.run(() => super.fetchMoreMovies());
+  }
+
+  late final _$fetchMoviesForSelectedGenresAsyncAction = AsyncAction(
+    '_MovieViewModelBase.fetchMoviesForSelectedGenres',
+    context: context,
+  );
+
+  @override
+  Future<void> fetchMoviesForSelectedGenres() {
+    return _$fetchMoviesForSelectedGenresAsyncAction.run(
+      () => super.fetchMoviesForSelectedGenres(),
+    );
   }
 
   late final _$_MovieViewModelBaseActionController = ActionController(
@@ -191,6 +249,8 @@ isLoading: ${isLoading},
 isFetchingMore: ${isFetchingMore},
 currentPage: ${currentPage},
 movies: ${movies},
+recommendedMovies: ${recommendedMovies},
+genres: ${genres},
 selectedMovies: ${selectedMovies},
 selectedGenres: ${selectedGenres},
 errorMessage: ${errorMessage}

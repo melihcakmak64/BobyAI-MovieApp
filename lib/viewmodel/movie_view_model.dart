@@ -23,6 +23,12 @@ abstract class _MovieViewModelBase with Store {
   List<MovieModel> movies = [];
 
   @observable
+  List<MovieModel> recommendedMovies = [];
+
+  @observable
+  ObservableList<GenreModel> genres = ObservableList();
+
+  @observable
   ObservableList<MovieModel> selectedMovies = ObservableList();
 
   @observable
@@ -31,7 +37,6 @@ abstract class _MovieViewModelBase with Store {
   @observable
   String? errorMessage;
 
-  // İlk yükleme
   @action
   Future<void> fetchMovies() async {
     isLoading = true;
@@ -46,7 +51,20 @@ abstract class _MovieViewModelBase with Store {
     }
   }
 
-  // Infinity scroll
+  @action
+  Future<void> fetchGenres() async {
+    isLoading = true;
+    errorMessage = null;
+    try {
+      final fetchedGenres = await repository.getGenres();
+      genres = ObservableList.of(fetchedGenres);
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
+    }
+  }
+
   @action
   Future<void> fetchMoreMovies() async {
     if (isFetchingMore) return;
@@ -60,6 +78,23 @@ abstract class _MovieViewModelBase with Store {
       movies = [...movies, ...newMovies];
     } finally {
       isFetchingMore = false;
+    }
+  }
+
+  @action
+  Future<void> fetchMoviesForSelectedGenres() async {
+    if (selectedGenres.isEmpty) return;
+
+    isLoading = true;
+    errorMessage = null;
+
+    try {
+      final genreIds = selectedGenres.map((g) => g.id).toList();
+      recommendedMovies = await repository.getMoviesByGenres(genreIds);
+    } catch (e) {
+      errorMessage = e.toString();
+    } finally {
+      isLoading = false;
     }
   }
 
