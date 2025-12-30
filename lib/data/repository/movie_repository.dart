@@ -41,4 +41,15 @@ class MovieRepository {
 
     return movies.take(9).toList();
   }
+
+  Future<List<MovieModel>> searchMovies(String query) async {
+    final response = await _dioClient.dio.get(
+      ApiConstants.searchMovies,
+      queryParameters: {'query': query},
+    );
+
+    return (response.data['results'] as List)
+        .map((e) => MovieDto.fromJson(e).toDomain())
+        .toList();
+  }
 }

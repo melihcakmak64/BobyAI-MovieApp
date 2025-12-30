@@ -71,7 +71,7 @@ class _CurvedHorizontalListState extends State<CurvedHorizontalList> {
               );
 
               return MoviePosterContainer(
-                imagePath: movie.posterPath ?? "",
+                imagePath: movie.posterPath,
                 isSelected: isSelected,
                 onTap: () => widget.viewModel.toggleMovie(movie),
               );
