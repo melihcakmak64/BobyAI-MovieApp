@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
-import 'package:movie_app_task/data/model/genre_model.dart';
+import 'package:movie_app_task/domain/model/genre_model.dart';
 import 'package:movie_app_task/view/onboarding/widgets/genre_container.dart';
 import 'package:movie_app_task/viewmodel/movie_view_model.dart';
 

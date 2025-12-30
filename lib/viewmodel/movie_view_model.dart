@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:movie_app_task/data/model/movie_model.dart';
-import 'package:movie_app_task/data/model/genre_model.dart';
+import 'package:movie_app_task/domain/model/movie_model.dart';
+import 'package:movie_app_task/domain/model/genre_model.dart';
 import 'package:movie_app_task/data/repository/movie_repository.dart';
 
 part 'movie_view_model.g.dart';

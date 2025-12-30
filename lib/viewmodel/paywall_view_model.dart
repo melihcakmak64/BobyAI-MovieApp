@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:mobx/mobx.dart';
-import 'package:movie_app_task/data/model/subscription_model.dart';
+import 'package:movie_app_task/domain/model/subscription_model.dart';
 part 'paywall_view_model.g.dart';
 
 enum PaywallVariant { variantA, variantB }

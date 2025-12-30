@@ -12,14 +12,4 @@ class MovieModel {
     required this.posterPath,
     required this.rating,
   });
-
-  factory MovieModel.fromJson(Map<String, dynamic> json) {
-    return MovieModel(
-      id: json['id'],
-      title: json['title'],
-      overview: json['overview'],
-      posterPath: json['poster_path'],
-      rating: (json['vote_average'] as num).toDouble(),
-    );
-  }
 }

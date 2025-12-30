@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
-import 'package:movie_app_task/data/model/genre_model.dart';
+import 'package:movie_app_task/domain/model/genre_model.dart';
 
 class GenreContainer extends StatelessWidget {
   final GenreModel genre;
