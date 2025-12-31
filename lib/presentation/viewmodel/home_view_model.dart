@@ -8,11 +8,11 @@ part 'home_view_model.g.dart';
 class HomeViewModel = _HomeViewModelBase with _$HomeViewModel;
 
 abstract class _HomeViewModelBase with Store {
-  final MovieRepository repository = MovieRepository();
+  final MovieRepository repository;
+  _HomeViewModelBase({required this.repository});
 
   @observable
   bool isLoading = false;
-
 
   @observable
   List<MovieModel> movies = [];
@@ -23,9 +23,10 @@ abstract class _HomeViewModelBase with Store {
   @observable
   String? errorMessage;
 
-
   @action
-  Future<void> fetchMoviesForSelectedGenres(List<GenreModel> selectedGenres) async {
+  Future<void> fetchMoviesForSelectedGenres(
+    List<GenreModel> selectedGenres,
+  ) async {
     if (selectedGenres.isEmpty) return;
 
     isLoading = true;
@@ -40,6 +41,4 @@ abstract class _HomeViewModelBase with Store {
       isLoading = false;
     }
   }
-
-
 }

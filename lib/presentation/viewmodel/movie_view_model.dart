@@ -8,7 +8,9 @@ part 'movie_view_model.g.dart';
 class MovieViewModel = _MovieViewModelBase with _$MovieViewModel;
 
 abstract class _MovieViewModelBase with Store {
-  final MovieRepository repository = MovieRepository();
+  final MovieRepository repository;
+
+  _MovieViewModelBase({required this.repository});
 
   @observable
   bool isLoading = false;
@@ -77,7 +79,6 @@ abstract class _MovieViewModelBase with Store {
       isFetchingMore = false;
     }
   }
-
 
   @action
   void toggleMovie(MovieModel movie) {

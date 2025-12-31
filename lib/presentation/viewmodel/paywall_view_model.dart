@@ -10,7 +10,7 @@ enum PaywallVariant { variantA, variantB }
 class PaywallViewModel = _PaywallViewModelBase with _$PaywallViewModel;
 
 abstract class _PaywallViewModelBase with Store {
-  final SubscriptionRepository _repository = SubscriptionRepository();
+  final SubscriptionRepository repository;
 
   @observable
   late PaywallVariant activeVariant;
@@ -27,15 +27,15 @@ abstract class _PaywallViewModelBase with Store {
   @observable
   ObservableList<AppFeature> allFeatures = ObservableList();
 
-  _PaywallViewModelBase() {
+  _PaywallViewModelBase({required this.repository}) {
     activeVariant = _determineVariant();
     _initData();
   }
 
   @action
   void _initData() {
-    allFeatures.addAll(_repository.getAllFeatures());
-    plans.addAll(_repository.getSubscriptionPlans());
+    allFeatures.addAll(repository.getAllFeatures());
+    plans.addAll(repository.getSubscriptionPlans());
     selectedPlan = plans.firstWhere(
       (e) => e.id == 1,
       orElse: () => plans.first,

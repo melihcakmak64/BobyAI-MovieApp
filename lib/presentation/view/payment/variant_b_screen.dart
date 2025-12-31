@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/presentation/view/payment/widgets/pricing_card_widget.dart';
 import 'package:movie_app_task/presentation/viewmodel/paywall_view_model.dart';
+import 'package:movie_app_task/routes/app_router.dart';
 
 class VariantB extends StatelessWidget {
   final PaywallViewModel viewModel = GetIt.I<PaywallViewModel>();
@@ -50,7 +52,12 @@ class VariantB extends StatelessWidget {
               children: [
                 IconButton(
                   icon: Icon(Icons.close, color: AppColors.white, size: 24.w),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    context.router.pushAndPopUntil(
+                      const HomeRoute(),
+                      predicate: (_) => false,
+                    );
+                  },
                 ),
                 Spacer(),
                 Column(
@@ -121,7 +128,13 @@ class VariantB extends StatelessWidget {
                     CustomButton(
                       isDark: false,
                       text: "Continue",
-                      onPressed: () => viewModel.purchaseSubscription(),
+                      onPressed: () {
+                        viewModel.purchaseSubscription();
+                        context.router.pushAndPopUntil(
+                          const HomeRoute(),
+                          predicate: (_) => false,
+                        );
+                      },
                     ),
 
                     20.verticalSpace,

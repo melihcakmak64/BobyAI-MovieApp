@@ -7,6 +7,7 @@ import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/presentation/view/home/home_screen.dart';
 import 'package:movie_app_task/presentation/view/onboarding/widgets/genre_container.dart';
+import 'package:movie_app_task/presentation/view/payment/paywall_screen.dart';
 import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
 import 'package:movie_app_task/routes/app_router.dart';
 
@@ -121,10 +122,7 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                   builder: (_) => CustomButton(
                     text: "Continue",
                     onPressed: () {
-                      context.router.pushAndPopUntil(
-                        const HomeRoute(),
-                        predicate: (_) => false,
-                      );
+                      context.router.push(PaywallRoute());
                     },
                     isDark: viewModel.selectedGenres.length < 2,
                   ),
