@@ -8,6 +8,7 @@ import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/animations/pulse_animation_wrapper.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/presentation/view/payment/widgets/pricing_card_widget.dart';
+import 'package:movie_app_task/presentation/view/payment/widgets/table_widget.dart';
 import 'package:movie_app_task/presentation/viewmodel/paywall_view_model.dart';
 
 class VariantA extends StatelessWidget {
@@ -43,68 +44,13 @@ class VariantA extends StatelessWidget {
                 16.verticalSpace,
 
                 // Table Container
-                Stack(
-                  children: [
-                    Column(
-                      spacing: 16.h,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(flex: 3, child: SizedBox()),
-                            Expanded(
-                              flex: 1,
-                              child: Center(
-                                child: Text(
-                                  "FREE",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Center(
-                                child: Text(
-                                  "PRO",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Observer(
-                          builder: (_) => Column(
-                            spacing: 16.h,
-                            children: viewModel.allFeatures.map((feature) {
-                              return _buildFeatureRow(
-                                feature.name,
-                                feature.isAvailableInFree,
-                                viewModel.isFeatureActive(feature.id),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      top: 0,
-                      bottom: 0,
-                      right: 10,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: BoxBorder.all(color: AppColors.redLight),
-                          color: Colors.transparent,
-                        ),
-                        width: 50.w,
-                      ),
-                    ),
-                  ],
+                Observer(
+                  builder: (context) {
+                    return FeaturesTable(
+                      features: viewModel.allFeatures,
+                      subscriptionPlan: viewModel.selectedPlan,
+                    );
+                  },
                 ),
 
                 SizedBox(height: 28.h),

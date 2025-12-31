@@ -67,16 +67,23 @@ mixin _$PaywallViewModel on _PaywallViewModelBase, Store {
   );
 
   @override
-  SubscriptionPlan? get selectedPlan {
+  SubscriptionPlan get selectedPlan {
     _$selectedPlanAtom.reportRead();
     return super.selectedPlan;
   }
 
+  bool _selectedPlanIsInitialized = false;
+
   @override
-  set selectedPlan(SubscriptionPlan? value) {
-    _$selectedPlanAtom.reportWrite(value, super.selectedPlan, () {
-      super.selectedPlan = value;
-    });
+  set selectedPlan(SubscriptionPlan value) {
+    _$selectedPlanAtom.reportWrite(
+      value,
+      _selectedPlanIsInitialized ? super.selectedPlan : null,
+      () {
+        super.selectedPlan = value;
+        _selectedPlanIsInitialized = true;
+      },
+    );
   }
 
   late final _$plansAtom = Atom(

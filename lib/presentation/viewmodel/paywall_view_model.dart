@@ -19,7 +19,7 @@ abstract class _PaywallViewModelBase with Store {
   bool isFreeTrialEnabled = false;
 
   @observable
-  SubscriptionPlan? selectedPlan;
+  late SubscriptionPlan selectedPlan;
 
   @observable
   ObservableList<SubscriptionPlan> plans = ObservableList();
@@ -36,8 +36,6 @@ abstract class _PaywallViewModelBase with Store {
   void _initData() {
     allFeatures.addAll(_repository.getAllFeatures());
     plans.addAll(_repository.getSubscriptionPlans());
-
-    // Varsayılan seçim (Monthly)
     selectedPlan = plans.firstWhere(
       (e) => e.id == 1,
       orElse: () => plans.first,
