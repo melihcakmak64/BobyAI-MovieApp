@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 
-enum BadgePosition { topRight, topCenter }
+enum BadgePosition {
+  topRight(Alignment.topRight),
+  topCenter(Alignment.topCenter);
+
+  final Alignment alignment;
+
+  const BadgePosition(this.alignment);
+}
 
 class PricingCard extends StatelessWidget {
   final String title;
@@ -92,14 +99,12 @@ class PricingCard extends StatelessWidget {
             ),
           ),
           if (badge != null)
-            Positioned(
+            Positioned.fill(
               top: -11.h,
-              right: badgePosition == BadgePosition.topRight ? 12.w : null,
-              left: badgePosition == BadgePosition.topCenter ? 1.sw / 3 : null,
+              right: 20.w,
+              left: 20.w,
               child: Align(
-                alignment: badgePosition == BadgePosition.topCenter
-                    ? Alignment.topCenter
-                    : Alignment.topRight,
+                alignment: badgePosition.alignment,
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 12.w,

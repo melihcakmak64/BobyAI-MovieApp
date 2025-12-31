@@ -67,16 +67,17 @@ class VariantB extends StatelessWidget {
                     ),
 
                     29.verticalSpace,
-                    Column(
-                      spacing: 16.h,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Feature Checklist
-                        _buildChecklist("Daily Movie Suggestions"),
-                        _buildChecklist("AI-Powered Movie Insights"),
-                        _buildChecklist("Personalized Watchlists"),
-                        _buildChecklist("Ad-Free Experience"),
-                      ],
+                    Observer(
+                      builder: (_) => Column(
+                        spacing: 16.h,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: viewModel.allFeatures.map((feature) {
+                          return _buildChecklist(
+                            feature.name,
+                            viewModel.isFeatureActive(feature.id),
+                          );
+                        }).toList(),
+                      ),
                     ),
 
                     52.verticalSpace,
@@ -144,11 +145,15 @@ class VariantB extends StatelessWidget {
     );
   }
 
-  Widget _buildChecklist(String title) {
+  Widget _buildChecklist(String title, bool isActive) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.check, color: Colors.white, size: 14.w),
+        Icon(
+          isActive ? Icons.check : Icons.close,
+          color: Colors.white,
+          size: 14.w,
+        ),
         12.horizontalSpace,
         Text(
           title,
