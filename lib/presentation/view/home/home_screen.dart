@@ -4,10 +4,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
-import 'package:movie_app_task/domain/model/genre_model.dart';
 import 'package:movie_app_task/presentation/view/home/widgets/circle_movie_container.dart';
-import 'package:movie_app_task/presentation/view/home/widgets/genre_chip.dart';
-import 'package:movie_app_task/presentation/view/home/widgets/genre_section.dart';
+import 'package:movie_app_task/presentation/view/home/widgets/movie_category_scroller.dart';
 import 'package:movie_app_task/presentation/viewmodel/home_view_model.dart';
 import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
 import 'package:movie_app_task/routes/app_router.dart';
@@ -23,70 +21,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final MovieViewModel movieViewModel = GetIt.I<MovieViewModel>();
   final HomeViewModel homeViewModel = GetIt.I<HomeViewModel>();
-  final ScrollController _scrollController = ScrollController();
-
-  final Map<int, GlobalKey> _sectionKeys = {};
-
   int activeGenreIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _initializeData();
-    _scrollController.addListener(_onScroll);
   }
 
   Future<void> _initializeData() async {
-    // Section key'lerini oluştur
-    for (int i = 0; i < movieViewModel.genres.length; i++) {
-      _sectionKeys[i] = GlobalKey();
-    }
-
     await homeViewModel.fetchHomeData(
       allGenres: movieViewModel.genres,
       selectedGenres: movieViewModel.selectedGenres,
     );
-    ;
-
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void _onScroll() {
-    final genres = movieViewModel.genres;
-
-    for (int i = 0; i < genres.length; i++) {
-      final keyContext = _sectionKeys[i]?.currentContext;
-      if (keyContext != null) {
-        final box = keyContext.findRenderObject() as RenderBox;
-        final offset = box.localToGlobal(Offset.zero).dy;
-
-        if (offset < 250 && offset > -250) {
-          if (activeGenreIndex != i) {
-            setState(() => activeGenreIndex = i);
-          }
-          break;
-        }
-      }
-    }
-  }
-
-  void _scrollToGenre(int index) {
-    final context = _sectionKeys[index]?.currentContext;
-    if (context != null) {
-      Scrollable.ensureVisible(
-        context,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
@@ -96,19 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Observer(
           builder: (_) {
-            // Loading durumunda tam ekran loading göster
+            // Loading State
             if (homeViewModel.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            // Error durumunda hata mesajı göster
+            // Error State
             if (homeViewModel.errorMessage != null) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Bir hata oluştu',
+                      'Error is occured!!',
                       style: TextStyle(color: Colors.white, fontSize: 18.sp),
                     ),
                     8.verticalSpace,
@@ -120,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     16.verticalSpace,
                     ElevatedButton(
                       onPressed: _initializeData,
-                      child: const Text('Tekrar Dene'),
+                      child: const Text('Try Again'),
                     ),
                   ],
                 ),
@@ -134,27 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 16.verticalSpace,
                 _buildMoviesSection(),
                 12.verticalSpace,
-                _buildGenreChips(movieViewModel.genres),
-                Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: movieViewModel.genres.length,
-                    itemBuilder: (_, index) {
-                      final genre = movieViewModel.genres.elementAt(index);
-                      print(genre.id);
-                      print(genre.name);
-                      // Her genre için kendi filmlerini al
-                      final movies = homeViewModel.getMoviesForGenre(genre.id);
 
-                      return Padding(
-                        padding: EdgeInsets.only(top: 24.h, left: 16.w),
-                        child: GenreSection(
-                          key: _sectionKeys[index],
-                          title: genre.name,
-                          movies: movies,
-                        ),
-                      );
-                    },
+                Expanded(
+                  child: MovieCategoryScroller(
+                    moviesByGenre: homeViewModel.moviesByGenre,
+                    genres: movieViewModel.genres,
                   ),
                 ),
               ],
@@ -222,30 +153,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: _SearchBar(),
         ),
       ],
-    );
-  }
-
-  // ---------------- GENRE CHIPS ----------------
-
-  Widget _buildGenreChips(List<GenreModel> genres) {
-    return Container(
-      height: 32.h,
-      padding: EdgeInsets.only(left: 20.w),
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: genres.length,
-        separatorBuilder: (_, __) => 12.horizontalSpace,
-        itemBuilder: (_, index) {
-          final genre = genres[index];
-          final isActive = index == activeGenreIndex;
-
-          return GenreChip(
-            label: genre.name,
-            isActive: isActive,
-            onTap: () => _scrollToGenre(index),
-          );
-        },
-      ),
     );
   }
 }

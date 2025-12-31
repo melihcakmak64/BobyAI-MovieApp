@@ -42,6 +42,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   get_it: ^9.2.0
   auto_route: 9.3.0
+  scrollable_list_tab_scroller: ^3.1.1
 
 dev_dependencies:
   flutter_test:
