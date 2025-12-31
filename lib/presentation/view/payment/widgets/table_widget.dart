@@ -102,15 +102,34 @@ class FeaturesTable extends StatelessWidget {
 class _FeatureIcon extends StatelessWidget {
   final bool isActive;
 
-  const _FeatureIcon({required this.isActive});
+  const _FeatureIcon({required this.isActive, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Icon(
-        isActive ? Icons.check_circle : Icons.close,
-        size: 20.r,
-        color: isActive ? AppColors.green : AppColors.gray,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        switchInCurve: Curves.easeOutBack,
+        switchOutCurve: Curves.easeIn,
+        transitionBuilder: (child, animation) {
+          final Offset beginOffset = isActive
+              ? const Offset(0, -0.35)
+              : const Offset(0, 0.35);
+
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: beginOffset,
+              end: Offset.zero,
+            ).animate(animation),
+            child: FadeTransition(opacity: animation, child: child),
+          );
+        },
+        child: Icon(
+          isActive ? Icons.check_circle : Icons.close,
+          key: ValueKey(isActive),
+          size: 20.r,
+          color: isActive ? AppColors.green : AppColors.gray,
+        ),
       ),
     );
   }
