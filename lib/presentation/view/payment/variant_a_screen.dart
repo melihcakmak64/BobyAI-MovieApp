@@ -175,45 +175,6 @@ class VariantA extends StatelessWidget {
     );
   }
 
-  Widget _buildFeatureRow(String title, bool isFree, bool isPro) {
-    return Padding(
-      padding: EdgeInsetsGeometry.symmetric(vertical: 3.5.h),
-      child: Row(
-        children: [
-          // Feature Name
-          Expanded(
-            flex: 3,
-            child: Text(
-              title,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-            ),
-          ),
-          // FREE Column
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: Icon(
-                isFree ? Icons.check_circle : Icons.cancel,
-                color: isFree ? AppColors.green : AppColors.gray,
-                size: 24.w,
-              ),
-            ),
-          ),
-          // PRO Column
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: Icon(
-                isPro ? Icons.check_circle : Icons.cancel,
-                color: isPro ? AppColors.green : AppColors.gray,
-                size: 24.w,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildFooterLink(String text) {
     return InkWell(

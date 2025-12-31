@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/presentation/view/onboarding/widgets/curved_horizontal_list.dart';
-import 'package:movie_app_task/presentation/view/onboarding/genre_selection_screen.dart';
 import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
 import 'package:movie_app_task/routes/app_router.dart';
 

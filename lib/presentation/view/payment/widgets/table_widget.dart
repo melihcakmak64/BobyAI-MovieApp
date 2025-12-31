@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app_task/core/constants/image_paths.dart';
+import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/domain/model/subscription_model.dart';
 
@@ -102,7 +104,7 @@ class FeaturesTable extends StatelessWidget {
 class _FeatureIcon extends StatelessWidget {
   final bool isActive;
 
-  const _FeatureIcon({required this.isActive, super.key});
+  const _FeatureIcon({required this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +126,11 @@ class _FeatureIcon extends StatelessWidget {
             child: FadeTransition(opacity: animation, child: child),
           );
         },
-        child: Icon(
-          isActive ? Icons.check_circle : Icons.close,
+        child: ImageHelper.asset(
+          isActive ? AImage.circularCheckIcon : AImage.circularCloseIcon,
+          height: 20.w,
+          width: 20.w,
           key: ValueKey(isActive),
-          size: 20.r,
-          color: isActive ? AppColors.green : AppColors.gray,
         ),
       ),
     );
