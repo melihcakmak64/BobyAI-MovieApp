@@ -22,6 +22,7 @@ class MovieSelectionScreen extends StatelessWidget {
             if (viewModel.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
+            final isSelectionComlete = viewModel.selectedMovies.length == 3;
 
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
@@ -29,7 +30,7 @@ class MovieSelectionScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Welcome",
+                    isSelectionComlete ? "Continue to next step 👉" : "Welcome",
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
@@ -37,7 +38,7 @@ class MovieSelectionScreen extends StatelessWidget {
                   ),
                   8.verticalSpace,
                   Text(
-                    "Choose your 3 favorite movies",
+                    isSelectionComlete ? "" : "Choose your 3 favorite movies",
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w500,
@@ -53,8 +54,8 @@ class MovieSelectionScreen extends StatelessWidget {
                   Observer(
                     builder: (_) => CustomButton(
                       text: "Continue",
-                      isDark: viewModel.selectedMovies.length < 3,
-                      onPressed: viewModel.selectedMovies.length == 3
+                      isDark: !isSelectionComlete,
+                      onPressed: isSelectionComlete
                           ? () {
                               context.router.push(GenreSelectionRoute());
                             }
