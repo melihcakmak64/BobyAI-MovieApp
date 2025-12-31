@@ -1,15 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/domain/model/genre_model.dart';
-import 'package:movie_app_task/view/home/widgets/circle_movie_container.dart';
-import 'package:movie_app_task/view/home/widgets/genre_chip.dart';
-import 'package:movie_app_task/view/home/widgets/genre_section.dart';
-import 'package:movie_app_task/viewmodel/home_view_model.dart';
-import 'package:movie_app_task/viewmodel/movie_view_model.dart';
+import 'package:movie_app_task/presentation/view/home/widgets/circle_movie_container.dart';
+import 'package:movie_app_task/presentation/view/home/widgets/genre_chip.dart';
+import 'package:movie_app_task/presentation/view/home/widgets/genre_section.dart';
+import 'package:movie_app_task/presentation/viewmodel/home_view_model.dart';
+import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
 
+@RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

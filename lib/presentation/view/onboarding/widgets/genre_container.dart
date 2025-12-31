@@ -37,6 +37,7 @@ class GenreContainer extends StatelessWidget {
             ),
             alignment: Alignment.center,
             child: Text(
+              textAlign: TextAlign.center,
               genre.name,
               style: TextStyle(
                 color: AppColors.black,

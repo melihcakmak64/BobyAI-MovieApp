@@ -6,8 +6,8 @@ import 'package:movie_app_task/core/constants/image_paths.dart';
 import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
-import 'package:movie_app_task/view/payment/widgets/pricing_card_widget.dart';
-import 'package:movie_app_task/viewmodel/paywall_view_model.dart';
+import 'package:movie_app_task/presentation/view/payment/widgets/pricing_card_widget.dart';
+import 'package:movie_app_task/presentation/viewmodel/paywall_view_model.dart';
 
 class VariantA extends StatelessWidget {
   final PaywallViewModel viewModel = GetIt.I<PaywallViewModel>();

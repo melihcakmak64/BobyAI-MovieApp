@@ -1,13 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
-import 'package:movie_app_task/view/home/home_screen.dart';
-import 'package:movie_app_task/view/onboarding/widgets/genre_container.dart';
-import 'package:movie_app_task/viewmodel/movie_view_model.dart';
+import 'package:movie_app_task/presentation/view/home/home_screen.dart';
+import 'package:movie_app_task/presentation/view/onboarding/widgets/genre_container.dart';
+import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
+import 'package:movie_app_task/routes/app_router.dart';
 
+@RoutePage()
 class GenreSelectionScreen extends StatefulWidget {
   const GenreSelectionScreen({super.key});
 
@@ -40,33 +43,35 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                   Observer(
                     builder: (_) {
                       final isCompleted = viewModel.selectedGenres.length == 2;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            isCompleted ? "Thank you 👍" : "Welcome",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.bold,
+                      return ConstrainedBox(
+                        constraints: BoxConstraints(minHeight: 65.h),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              isCompleted ? "Thank you 👍" : "Welcome",
+                              style: TextStyle(
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          if (!isCompleted) ...[
                             12.verticalSpace,
                             Text(
-                              "Choose your 2 favorite genres",
+                              isCompleted
+                                  ? ""
+                                  : "Choose your 2 favorite genres",
                               style: TextStyle(
-                                color: AppColors.white,
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
-                          54.verticalSpace,
-                        ],
+                        ),
                       );
                     },
                   ),
+                  38.verticalSpace,
 
                   // Grid Section
                   Expanded(
@@ -80,6 +85,7 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                           );
                         }
                         return GridView.builder(
+                          padding: EdgeInsets.only(bottom: 120.h, top: 34.h),
                           physics: const BouncingScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -115,9 +121,9 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                   builder: (_) => CustomButton(
                     text: "Continue",
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => HomeScreen()),
+                      context.router.pushAndPopUntil(
+                        const HomeRoute(),
+                        predicate: (_) => false,
                       );
                     },
                     isDark: viewModel.selectedGenres.length < 2,

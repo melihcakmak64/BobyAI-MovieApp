@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movie_app_task/view/payment/variant_a_screen.dart';
-import 'package:movie_app_task/view/payment/variant_b_screen.dart';
-import 'package:movie_app_task/viewmodel/paywall_view_model.dart';
+import 'package:movie_app_task/presentation/view/payment/variant_a_screen.dart';
+import 'package:movie_app_task/presentation/view/payment/variant_b_screen.dart';
+import 'package:movie_app_task/presentation/viewmodel/paywall_view_model.dart';
 
+@RoutePage()
 class PaywallScreen extends StatelessWidget {
   final PaywallViewModel viewModel = GetIt.I<PaywallViewModel>();
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:movie_app_task/core/widgets/movie_poster_container.dart';
 import 'package:movie_app_task/domain/model/movie_model.dart';
-import 'package:movie_app_task/viewmodel/movie_view_model.dart';
+import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
 
 class CurvedHorizontalList extends StatefulWidget {
   final List<MovieModel> movies;
