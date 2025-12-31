@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app_task/core/theme/app_colors.dart';
 
 enum ImageType { network, asset }
 
@@ -48,7 +49,8 @@ class ImageHelper extends StatelessWidget {
           placeholder: (context, url) =>
               placeholder ?? const Center(child: CircularProgressIndicator()),
           errorWidget: (context, url, error) {
-            return errorWidget ?? const Icon(Icons.error);
+            return errorWidget ??
+                const Icon(Icons.error, color: AppColors.white);
           },
         );
       case ImageType.asset:

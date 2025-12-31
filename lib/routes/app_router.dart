@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app_task/presentation/view/home/home_screen.dart';
+import 'package:movie_app_task/presentation/view/home/search_screen.dart';
 import 'package:movie_app_task/presentation/view/onboarding/genre_selection_screen.dart';
 import 'package:movie_app_task/presentation/view/onboarding/movie_selection_screen.dart';
 import 'package:movie_app_task/presentation/view/payment/paywall_screen.dart';
@@ -19,6 +20,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: GenreSelectionRoute.page),
     AutoRoute(page: PaywallRoute.page),
     AutoRoute(page: HomeRoute.page),
+    AutoRoute(page: SearchRoute.page),
   ];
 }
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:mobx/mobx.dart';
 import 'package:movie_app_task/domain/model/movie_model.dart';
 import 'package:movie_app_task/domain/model/genre_model.dart';
@@ -12,7 +13,13 @@ abstract class _HomeViewModelBase with Store {
   _HomeViewModelBase({required this.repository});
 
   @observable
+  String? searchQuery;
+
+  @observable
   bool isLoading = false;
+
+  @observable
+  bool isSearching = false;
 
   @observable
   List<MovieModel> movies = [];
@@ -21,7 +28,41 @@ abstract class _HomeViewModelBase with Store {
   List<MovieModel> recommendedMovies = [];
 
   @observable
+  List<MovieModel> searchResults = [];
+
+  @observable
   String? errorMessage;
+
+  Timer? _debounceTimer;
+
+  @action
+  void setSearchQuery(String? query) {
+    searchQuery = query;
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(Duration(milliseconds: 500), () {
+      _handleSearch(query);
+    });
+  }
+
+  @action
+  Future<void> _handleSearch(String? query) async {
+    if (query == null || query.isEmpty) {
+      searchResults = [];
+      isSearching = false;
+      return;
+    }
+
+    isSearching = true;
+
+    try {
+      searchResults = await repository.searchMovies(query);
+    } catch (e) {
+      searchResults = [];
+      errorMessage = e.toString();
+    } finally {
+      isSearching = false;
+    }
+  }
 
   @action
   Future<void> fetchMoviesForSelectedGenres(
@@ -40,5 +81,12 @@ abstract class _HomeViewModelBase with Store {
     } finally {
       isLoading = false;
     }
+  }
+
+  @action
+  void resetSearch() {
+    searchQuery = null;
+    searchResults = [];
+    _debounceTimer?.cancel();
   }
 }

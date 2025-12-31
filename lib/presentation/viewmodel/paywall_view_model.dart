@@ -58,9 +58,9 @@ abstract class _PaywallViewModelBase with Store {
   }
 
   @computed
-  int get selectedPlanFeatureCount => selectedPlan?.featureIds.length ?? 0;
+  int get selectedPlanFeatureCount => selectedPlan.featureIds.length;
   bool isFeatureActive(int featureId) {
-    return selectedPlan?.featureIds.contains(featureId) ?? false;
+    return selectedPlan.featureIds.contains(featureId);
   }
 
   @action

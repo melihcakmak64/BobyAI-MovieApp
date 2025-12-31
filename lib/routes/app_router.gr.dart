@@ -93,6 +93,40 @@ class PaywallRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SearchScreen]
+class SearchRoute extends PageRouteInfo<SearchRouteArgs> {
+  SearchRoute({Key? key, List<PageRouteInfo>? children})
+    : super(
+        SearchRoute.name,
+        args: SearchRouteArgs(key: key),
+        initialChildren: children,
+      );
+
+  static const String name = 'SearchRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<SearchRouteArgs>(
+        orElse: () => const SearchRouteArgs(),
+      );
+      return SearchScreen(key: args.key);
+    },
+  );
+}
+
+class SearchRouteArgs {
+  const SearchRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SearchRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
 /// [SplashScreen]
 class SplashRoute extends PageRouteInfo<void> {
   const SplashRoute({List<PageRouteInfo>? children})

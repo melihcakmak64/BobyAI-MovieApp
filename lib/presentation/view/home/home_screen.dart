@@ -10,6 +10,7 @@ import 'package:movie_app_task/presentation/view/home/widgets/genre_chip.dart';
 import 'package:movie_app_task/presentation/view/home/widgets/genre_section.dart';
 import 'package:movie_app_task/presentation/viewmodel/home_view_model.dart';
 import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
+import 'package:movie_app_task/routes/app_router.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -201,23 +202,25 @@ class _HomeScreenState extends State<HomeScreen> {
 class _SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 36.h,
-
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.search, color: AppColors.grayDark),
-          6.horizontalSpace,
-          Expanded(
-            child: Text("Search", style: TextStyle(color: AppColors.grayDark)),
-          ),
-          Icon(Icons.mic, color: AppColors.grayDark),
-        ],
+    return InkWell(
+      onTap: ()=>context.router.push(SearchRoute()),
+      child: Container(
+        height: 36.h,
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.search, color: AppColors.grayDark),
+            6.horizontalSpace,
+            Expanded(
+              child: Text("Search", style: TextStyle(color: AppColors.grayDark)),
+            ),
+            Icon(Icons.mic, color: AppColors.grayDark),
+          ],
+        ),
       ),
     );
   }

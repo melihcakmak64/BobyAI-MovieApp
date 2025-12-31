@@ -6,14 +6,14 @@ class MoviePosterContainer extends StatelessWidget {
   final double? width;
   final double? height;
   final String imagePath;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isSelected;
 
   const MoviePosterContainer({
     super.key,
     this.height,
     this.width,
-    required this.onTap,
+    this.onTap,
     required this.imagePath,
     this.isSelected = false,
   });
