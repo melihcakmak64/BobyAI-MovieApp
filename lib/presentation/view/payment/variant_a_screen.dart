@@ -15,6 +15,7 @@ class VariantA extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      minimum: EdgeInsets.only(bottom: 33.h),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Stack(

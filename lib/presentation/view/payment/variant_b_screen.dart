@@ -30,8 +30,8 @@ class VariantB extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withOpacity(0.5),
-                  Colors.black.withOpacity(0.9),
+                  Colors.black.withValues(alpha: 0.5),
+                  Colors.black.withValues(alpha: 0.9),
                   Colors.black,
                 ],
                 stops: [0.0, 0.4, 0.7, 1.0],
@@ -42,6 +42,7 @@ class VariantB extends StatelessWidget {
 
         // Content
         SafeArea(
+          minimum: EdgeInsets.only(bottom: 33.h),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(top: 30.h),
             child: Column(
