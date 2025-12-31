@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:mobx/mobx.dart';
+import 'package:movie_app_task/data/repository/subscription_repository.dart';
 import 'package:movie_app_task/domain/model/subscription_model.dart';
 part 'paywall_view_model.g.dart';
 
@@ -9,52 +10,45 @@ enum PaywallVariant { variantA, variantB }
 class PaywallViewModel = _PaywallViewModelBase with _$PaywallViewModel;
 
 abstract class _PaywallViewModelBase with Store {
-  late final PaywallVariant activeVariant;
+  final SubscriptionRepository _repository = SubscriptionRepository();
+
+  @observable
+  late PaywallVariant activeVariant;
 
   @observable
   bool isFreeTrialEnabled = false;
 
   @observable
   SubscriptionPlan? selectedPlan;
+
   @observable
   ObservableList<SubscriptionPlan> plans = ObservableList();
 
+  @observable
+  ObservableList<AppFeature> allFeatures = ObservableList();
+
   _PaywallViewModelBase() {
     activeVariant = _determineVariant();
-    _initPlans();
+    _initData();
+  }
+
+  @action
+  void _initData() {
+    allFeatures.addAll(_repository.getAllFeatures());
+    plans.addAll(_repository.getSubscriptionPlans());
+
+    // Varsayılan seçim (Monthly)
+    selectedPlan = plans.firstWhere(
+      (e) => e.id == 1,
+      orElse: () => plans.first,
+    );
   }
 
   @action
   PaywallVariant _determineVariant() {
-    final random = Random();
-    return PaywallVariant.values[random.nextInt(PaywallVariant.values.length)];
-  }
-
-  @action
-  void _initPlans() {
-    plans.addAll([
-      SubscriptionPlan(
-        id: 0,
-        title: 'Weekly',
-        subtitle: '\$4.99 / per week',
-        price: '\$4.99 / week',
-      ),
-      SubscriptionPlan(
-        id: 1,
-        title: 'Monthly',
-        subtitle: '\$11.99 / month',
-        price: '\$2.99 / week',
-      ),
-      SubscriptionPlan(
-        id: 2,
-        title: 'Yearly',
-        subtitle: '\$49.99 / year',
-        price: '\$0.96 / week',
-        badge: 'Best Value',
-      ),
-    ]);
-
-    selectedPlan = plans.firstWhere((e) => e.id == 1);
+    return PaywallVariant.values[Random().nextInt(
+      PaywallVariant.values.length,
+    )];
   }
 
   @action
@@ -63,6 +57,12 @@ abstract class _PaywallViewModelBase with Store {
   @action
   void selectPlan(SubscriptionPlan plan) {
     selectedPlan = plan;
+  }
+
+  @computed
+  int get selectedPlanFeatureCount => selectedPlan?.featureIds.length ?? 0;
+  bool isFeatureActive(int featureId) {
+    return selectedPlan?.featureIds.contains(featureId) ?? false;
   }
 
   @action

@@ -74,16 +74,6 @@ class MovieSelectionRouteArgs {
   String toString() {
     return 'MovieSelectionRouteArgs{key: $key}';
   }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! MovieSelectionRouteArgs) return false;
-    return key == other.key;
-  }
-
-  @override
-  int get hashCode => key.hashCode;
 }
 
 /// generated route for

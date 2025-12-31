@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/constants/image_paths.dart';
 import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/widgets/animations/pulse_animation_wrapper.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/presentation/view/payment/widgets/pricing_card_widget.dart';
 import 'package:movie_app_task/presentation/viewmodel/paywall_view_model.dart';
@@ -42,43 +43,67 @@ class VariantA extends StatelessWidget {
                 16.verticalSpace,
 
                 // Table Container
-                Column(
-                  spacing: 16.h,
+                Stack(
                   children: [
-                    Row(
+                    Column(
+                      spacing: 16.h,
                       children: [
-                        Expanded(flex: 3, child: SizedBox()),
-                        Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: Text(
-                              "FREE",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
+                        Row(
+                          children: [
+                            Expanded(flex: 3, child: SizedBox()),
+                            Expanded(
+                              flex: 1,
+                              child: Center(
+                                child: Text(
+                                  "FREE",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Expanded(
+                              flex: 1,
+                              child: Center(
+                                child: Text(
+                                  "PRO",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: Text(
-                              "PRO",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                        Observer(
+                          builder: (_) => Column(
+                            spacing: 16.h,
+                            children: viewModel.allFeatures.map((feature) {
+                              return _buildFeatureRow(
+                                feature.name,
+                                feature.isAvailableInFree,
+                                viewModel.isFeatureActive(feature.id),
+                              );
+                            }).toList(),
                           ),
                         ),
                       ],
                     ),
-
-                    _buildFeatureRow("Daily Movie Suggestions", true, true),
-                    _buildFeatureRow("AI-Powered Movie Insights", false, true),
-                    _buildFeatureRow("Personalized Watchlists", false, true),
-                    _buildFeatureRow("Ad-Free Experience", false, true),
+                    Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 10,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: BoxBorder.all(color: AppColors.redLight),
+                          color: Colors.transparent,
+                        ),
+                        width: 50.w,
+                      ),
+                    ),
                   ],
                 ),
 
@@ -111,7 +136,6 @@ class VariantA extends StatelessWidget {
                           child: Switch(
                             value: viewModel.isFreeTrialEnabled,
                             onChanged: (val) => viewModel.toggleFreeTrial(val),
-                            activeThumbColor: AppColors.redLight,
                           ),
                         ),
                       ),
@@ -160,16 +184,19 @@ class VariantA extends StatelessWidget {
                 SizedBox(height: 12.h),
                 Observer(
                   builder: (_) {
-                    return CustomButton(
-                      text: viewModel.isFreeTrialEnabled
-                          ? "3 Days Free\nNo Payment Now"
-                          : "Unlock MovieAI PRO",
-                      onPressed: () => viewModel.purchaseSubscription(),
-                      trailingIcon: Icons.arrow_forward,
+                    return PulseAnimation(
+                      isActive: viewModel.isFreeTrialEnabled,
+                      child: CustomButton(
+                        text: viewModel.isFreeTrialEnabled
+                            ? "3 Days Free\nNo Payment Now"
+                            : "Unlock MovieAI PRO",
+                        onPressed: () => viewModel.purchaseSubscription(),
+                        trailingIcon: Icons.arrow_forward,
+                      ),
                     );
                   },
                 ),
-                SizedBox(height: 16.h),
+                16.verticalSpace,
 
                 // Footer Links
                 Row(

@@ -9,6 +9,40 @@ part of 'paywall_view_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PaywallViewModel on _PaywallViewModelBase, Store {
+  Computed<int>? _$selectedPlanFeatureCountComputed;
+
+  @override
+  int get selectedPlanFeatureCount =>
+      (_$selectedPlanFeatureCountComputed ??= Computed<int>(
+        () => super.selectedPlanFeatureCount,
+        name: '_PaywallViewModelBase.selectedPlanFeatureCount',
+      )).value;
+
+  late final _$activeVariantAtom = Atom(
+    name: '_PaywallViewModelBase.activeVariant',
+    context: context,
+  );
+
+  @override
+  PaywallVariant get activeVariant {
+    _$activeVariantAtom.reportRead();
+    return super.activeVariant;
+  }
+
+  bool _activeVariantIsInitialized = false;
+
+  @override
+  set activeVariant(PaywallVariant value) {
+    _$activeVariantAtom.reportWrite(
+      value,
+      _activeVariantIsInitialized ? super.activeVariant : null,
+      () {
+        super.activeVariant = value;
+        _activeVariantIsInitialized = true;
+      },
+    );
+  }
+
   late final _$isFreeTrialEnabledAtom = Atom(
     name: '_PaywallViewModelBase.isFreeTrialEnabled',
     context: context,
@@ -63,10 +97,40 @@ mixin _$PaywallViewModel on _PaywallViewModelBase, Store {
     });
   }
 
+  late final _$allFeaturesAtom = Atom(
+    name: '_PaywallViewModelBase.allFeatures',
+    context: context,
+  );
+
+  @override
+  ObservableList<AppFeature> get allFeatures {
+    _$allFeaturesAtom.reportRead();
+    return super.allFeatures;
+  }
+
+  @override
+  set allFeatures(ObservableList<AppFeature> value) {
+    _$allFeaturesAtom.reportWrite(value, super.allFeatures, () {
+      super.allFeatures = value;
+    });
+  }
+
   late final _$_PaywallViewModelBaseActionController = ActionController(
     name: '_PaywallViewModelBase',
     context: context,
   );
+
+  @override
+  void _initData() {
+    final _$actionInfo = _$_PaywallViewModelBaseActionController.startAction(
+      name: '_PaywallViewModelBase._initData',
+    );
+    try {
+      return super._initData();
+    } finally {
+      _$_PaywallViewModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   PaywallVariant _determineVariant() {
@@ -75,18 +139,6 @@ mixin _$PaywallViewModel on _PaywallViewModelBase, Store {
     );
     try {
       return super._determineVariant();
-    } finally {
-      _$_PaywallViewModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void _initPlans() {
-    final _$actionInfo = _$_PaywallViewModelBaseActionController.startAction(
-      name: '_PaywallViewModelBase._initPlans',
-    );
-    try {
-      return super._initPlans();
     } finally {
       _$_PaywallViewModelBaseActionController.endAction(_$actionInfo);
     }
@@ -131,9 +183,12 @@ mixin _$PaywallViewModel on _PaywallViewModelBase, Store {
   @override
   String toString() {
     return '''
+activeVariant: ${activeVariant},
 isFreeTrialEnabled: ${isFreeTrialEnabled},
 selectedPlan: ${selectedPlan},
-plans: ${plans}
+plans: ${plans},
+allFeatures: ${allFeatures},
+selectedPlanFeatureCount: ${selectedPlanFeatureCount}
     ''';
   }
 }

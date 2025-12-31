@@ -9,6 +9,7 @@ extension SubscriptionPlanDtoMapper on SubscriptionPlanDto {
       subtitle: subtitle,
       price: price,
       badge: badge,
+      featureIds: featureIds, 
     );
   }
 }
