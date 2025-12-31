@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/constants/image_paths.dart';
 import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
@@ -9,8 +10,7 @@ import 'package:movie_app_task/view/payment/widgets/pricing_card_widget.dart';
 import 'package:movie_app_task/viewmodel/paywall_view_model.dart';
 
 class VariantB extends StatelessWidget {
-  final PaywallViewModel viewModel;
-  const VariantB({required this.viewModel});
+  final PaywallViewModel viewModel = GetIt.I<PaywallViewModel>();
 
   @override
   Widget build(BuildContext context) {

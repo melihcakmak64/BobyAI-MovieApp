@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/domain/model/genre_model.dart';
 import 'package:movie_app_task/view/home/widgets/circle_movie_container.dart';
 import 'package:movie_app_task/view/home/widgets/genre_chip.dart';
 import 'package:movie_app_task/view/home/widgets/genre_section.dart';
+import 'package:movie_app_task/viewmodel/home_view_model.dart';
 import 'package:movie_app_task/viewmodel/movie_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
-  final MovieViewModel viewModel;
-  const HomeScreen({super.key, required this.viewModel});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final MovieViewModel movieViewModel = GetIt.I<MovieViewModel>();
+  final HomeViewModel homeViewModel = GetIt.I<HomeViewModel>();
   final ScrollController _scrollController = ScrollController();
 
   final Map<int, GlobalKey> _sectionKeys = {};
@@ -27,10 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     Future.microtask(() async {
-      await widget.viewModel.fetchMovies();
-      await widget.viewModel.fetchMoviesForSelectedGenres();
-
-      for (int i = 0; i < widget.viewModel.genres.length; i++) {
+      await homeViewModel.fetchMoviesForSelectedGenres(
+        movieViewModel.selectedGenres,
+      );
+      for (int i = 0; i < movieViewModel.genres.length; i++) {
         _sectionKeys[i] = GlobalKey();
       }
       setState(() {});
@@ -40,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onScroll() {
-    final genres = widget.viewModel.genres;
+    final genres = movieViewModel.genres;
 
     for (int i = 0; i < genres.length; i++) {
       final keyContext = _sectionKeys[i]?.currentContext;
@@ -76,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Observer(
           builder: (_) {
-            if (widget.viewModel.isLoading) {
+            if (movieViewModel.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -87,14 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 16.verticalSpace,
                 _buildMoviesSection(),
                 12.verticalSpace,
-                _buildGenreChips(widget.viewModel.genres),
+                _buildGenreChips(movieViewModel.genres),
                 Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
-                    itemCount: widget.viewModel.genres.length,
+                    itemCount: movieViewModel.genres.length,
                     itemBuilder: (_, index) {
-                      final genre = widget.viewModel.genres.elementAt(index);
-                      final movies = widget.viewModel.movies;
+                      final genre = movieViewModel.genres.elementAt(index);
+                      final movies = movieViewModel.movies;
 
                       return Padding(
                         padding: EdgeInsetsGeometry.only(top: 24.h, left: 16.w),
@@ -132,10 +135,10 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 80.h,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: widget.viewModel.recommendedMovies.length,
+              itemCount: homeViewModel.recommendedMovies.length,
               separatorBuilder: (_, __) => 20.horizontalSpace,
               itemBuilder: (_, index) {
-                final movie = widget.viewModel.recommendedMovies[index];
+                final movie = homeViewModel.recommendedMovies[index];
                 return CircleMovieContainer(movie: movie);
               },
             ),

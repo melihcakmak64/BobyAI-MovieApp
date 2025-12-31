@@ -23,9 +23,6 @@ abstract class _MovieViewModelBase with Store {
   List<MovieModel> movies = [];
 
   @observable
-  List<MovieModel> recommendedMovies = [];
-
-  @observable
   ObservableList<GenreModel> genres = ObservableList();
 
   @observable
@@ -81,22 +78,6 @@ abstract class _MovieViewModelBase with Store {
     }
   }
 
-  @action
-  Future<void> fetchMoviesForSelectedGenres() async {
-    if (selectedGenres.isEmpty) return;
-
-    isLoading = true;
-    errorMessage = null;
-
-    try {
-      final genreIds = selectedGenres.map((g) => g.id).toList();
-      recommendedMovies = await repository.getMoviesByGenres(genreIds);
-    } catch (e) {
-      errorMessage = e.toString();
-    } finally {
-      isLoading = false;
-    }
-  }
 
   @action
   void toggleMovie(MovieModel movie) {

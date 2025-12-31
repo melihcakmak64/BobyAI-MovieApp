@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/view/home/home_screen.dart';
@@ -8,25 +9,23 @@ import 'package:movie_app_task/view/onboarding/widgets/genre_container.dart';
 import 'package:movie_app_task/viewmodel/movie_view_model.dart';
 
 class GenreSelectionScreen extends StatefulWidget {
-  final MovieViewModel viewModel;
-
-  const GenreSelectionScreen({super.key, required this.viewModel});
+  const GenreSelectionScreen({super.key});
 
   @override
   State<GenreSelectionScreen> createState() => _GenreSelectionScreenState();
 }
 
 class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
+  final MovieViewModel viewModel = GetIt.I<MovieViewModel>();
+
   @override
   void initState() {
     super.initState();
-    widget.viewModel.fetchGenres();
+    viewModel.fetchGenres();
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = widget.viewModel;
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -118,9 +117,7 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => HomeScreen(viewModel: viewModel),
-                        ),
+                        MaterialPageRoute(builder: (_) => HomeScreen()),
                       );
                     },
                     isDark: viewModel.selectedGenres.length < 2,

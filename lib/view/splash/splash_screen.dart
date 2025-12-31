@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/constants/image_paths.dart';
 import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
@@ -13,12 +14,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late final MovieViewModel viewModel;
+  final MovieViewModel viewModel = GetIt.I<MovieViewModel>();
 
   @override
   void initState() {
     super.initState();
-    viewModel = MovieViewModel();
     _init();
   }
 
@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => FavoriteMoviesSelectionScreen(viewModel: viewModel),
+        builder: (_) => FavoriteMoviesSelectionScreen(),
       ),
     );
   }

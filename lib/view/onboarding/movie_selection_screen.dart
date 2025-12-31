@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/view/onboarding/widgets/curved_horizontal_list.dart';
 import 'package:movie_app_task/view/onboarding/genre_selection_screen.dart';
 import 'package:movie_app_task/viewmodel/movie_view_model.dart';
 
 class FavoriteMoviesSelectionScreen extends StatelessWidget {
-  final MovieViewModel viewModel;
-
-  const FavoriteMoviesSelectionScreen({super.key, required this.viewModel});
+  FavoriteMoviesSelectionScreen({super.key});
+  final MovieViewModel viewModel = GetIt.I<MovieViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +57,7 @@ class FavoriteMoviesSelectionScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => GenreSelectionScreen(
-                                    viewModel: viewModel,
-                                  ),
+                                  builder: (_) => GenreSelectionScreen(),
                                 ),
                               );
                             }
