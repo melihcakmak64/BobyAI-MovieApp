@@ -145,15 +145,21 @@ mixin _$HomeViewModel on _HomeViewModelBase, Store {
     return _$_handleSearchAsyncAction.run(() => super._handleSearch(query));
   }
 
-  late final _$fetchMoviesForSelectedGenresAsyncAction = AsyncAction(
-    '_HomeViewModelBase.fetchMoviesForSelectedGenres',
+  late final _$fetchHomeDataAsyncAction = AsyncAction(
+    '_HomeViewModelBase.fetchHomeData',
     context: context,
   );
 
   @override
-  Future<void> fetchMoviesForSelectedGenres(List<GenreModel> selectedGenres) {
-    return _$fetchMoviesForSelectedGenresAsyncAction.run(
-      () => super.fetchMoviesForSelectedGenres(selectedGenres),
+  Future<void> fetchHomeData({
+    required List<GenreModel> allGenres,
+    required List<GenreModel> selectedGenres,
+  }) {
+    return _$fetchHomeDataAsyncAction.run(
+      () => super.fetchHomeData(
+        allGenres: allGenres,
+        selectedGenres: selectedGenres,
+      ),
     );
   }
 

@@ -32,17 +32,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
-      await homeViewModel.fetchMoviesForSelectedGenres(
-        movieViewModel.selectedGenres,
-      );
-      for (int i = 0; i < movieViewModel.genres.length; i++) {
-        _sectionKeys[i] = GlobalKey();
-      }
-      setState(() {});
-    });
-
+    _initializeData();
     _scrollController.addListener(_onScroll);
+  }
+
+  Future<void> _initializeData() async {
+    // Section key'lerini oluştur
+    for (int i = 0; i < movieViewModel.genres.length; i++) {
+      _sectionKeys[i] = GlobalKey();
+    }
+
+    await homeViewModel.fetchHomeData(
+      allGenres: movieViewModel.genres,
+      selectedGenres: movieViewModel.selectedGenres,
+    );
+    ;
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _onScroll() {
@@ -65,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _scrollToGenre(int index) {
-    final context = _sectionKeys[index]!.currentContext;
+    final context = _sectionKeys[index]?.currentContext;
     if (context != null) {
       Scrollable.ensureVisible(
         context,
@@ -76,14 +84,47 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.black,
       body: SafeArea(
         child: Observer(
           builder: (_) {
-            if (movieViewModel.isLoading) {
+            // Loading durumunda tam ekran loading göster
+            if (homeViewModel.isLoading) {
               return const Center(child: CircularProgressIndicator());
+            }
+
+            // Error durumunda hata mesajı göster
+            if (homeViewModel.errorMessage != null) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Bir hata oluştu',
+                      style: TextStyle(color: Colors.white, fontSize: 18.sp),
+                    ),
+                    8.verticalSpace,
+                    Text(
+                      homeViewModel.errorMessage!,
+                      style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                    16.verticalSpace,
+                    ElevatedButton(
+                      onPressed: _initializeData,
+                      child: const Text('Tekrar Dene'),
+                    ),
+                  ],
+                ),
+              );
             }
 
             return Column(
@@ -100,10 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: movieViewModel.genres.length,
                     itemBuilder: (_, index) {
                       final genre = movieViewModel.genres.elementAt(index);
-                      final movies = movieViewModel.movies;
+                      print(genre.id);
+                      print(genre.name);
+                      // Her genre için kendi filmlerini al
+                      final movies = homeViewModel.getMoviesForGenre(genre.id);
 
                       return Padding(
-                        padding: EdgeInsetsGeometry.only(top: 24.h, left: 16.w),
+                        padding: EdgeInsets.only(top: 24.h, left: 16.w),
                         child: GenreSection(
                           key: _sectionKeys[index],
                           title: genre.name,
@@ -136,15 +180,22 @@ class _HomeScreenState extends State<HomeScreen> {
           20.verticalSpace,
           SizedBox(
             height: 80.h,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: homeViewModel.recommendedMovies.length,
-              separatorBuilder: (_, __) => 20.horizontalSpace,
-              itemBuilder: (_, index) {
-                final movie = homeViewModel.recommendedMovies[index];
-                return CircleMovieContainer(movie: movie);
-              },
-            ),
+            child: homeViewModel.recommendedMovies.isEmpty
+                ? Center(
+                    child: Text(
+                      'Movie not found',
+                      style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                    ),
+                  )
+                : ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: homeViewModel.recommendedMovies.length,
+                    separatorBuilder: (_, __) => 20.horizontalSpace,
+                    itemBuilder: (_, index) {
+                      final movie = homeViewModel.recommendedMovies[index];
+                      return CircleMovieContainer(movie: movie);
+                    },
+                  ),
           ),
           20.verticalSpace,
         ],
@@ -203,7 +254,7 @@ class _SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>context.router.push(SearchRoute()),
+      onTap: () => context.router.push(SearchRoute()),
       child: Container(
         height: 36.h,
         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -216,7 +267,10 @@ class _SearchBar extends StatelessWidget {
             Icon(Icons.search, color: AppColors.grayDark),
             6.horizontalSpace,
             Expanded(
-              child: Text("Search", style: TextStyle(color: AppColors.grayDark)),
+              child: Text(
+                "Search",
+                style: TextStyle(color: AppColors.grayDark),
+              ),
             ),
             Icon(Icons.mic, color: AppColors.grayDark),
           ],

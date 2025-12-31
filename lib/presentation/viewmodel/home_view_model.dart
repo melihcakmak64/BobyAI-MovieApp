@@ -24,6 +24,8 @@ abstract class _HomeViewModelBase with Store {
   @observable
   List<MovieModel> movies = [];
 
+  Map<int, List<MovieModel>> moviesByGenre = {};
+
   @observable
   List<MovieModel> recommendedMovies = [];
 
@@ -34,6 +36,10 @@ abstract class _HomeViewModelBase with Store {
   String? errorMessage;
 
   Timer? _debounceTimer;
+
+  List<MovieModel> getMoviesForGenre(int genreId) {
+    return moviesByGenre[genreId] ?? [];
+  }
 
   @action
   void setSearchQuery(String? query) {
@@ -65,17 +71,34 @@ abstract class _HomeViewModelBase with Store {
   }
 
   @action
-  Future<void> fetchMoviesForSelectedGenres(
-    List<GenreModel> selectedGenres,
-  ) async {
-    if (selectedGenres.isEmpty) return;
-
+  Future<void> fetchHomeData({
+    required List<GenreModel> allGenres,
+    required List<GenreModel> selectedGenres,
+  }) async {
     isLoading = true;
     errorMessage = null;
 
     try {
-      final genreIds = selectedGenres.map((g) => g.id).toList();
-      recommendedMovies = await repository.getMoviesByGenres(genreIds);
+      await Future.wait([
+        if (selectedGenres.isNotEmpty)
+          () async {
+            final genreIds = selectedGenres.map((g) => g.id).toList();
+            recommendedMovies = await repository.getMoviesByGenres(genreIds);
+          }(),
+        if (allGenres.isNotEmpty)
+          () async {
+            await Future.wait(
+              allGenres.map((genre) async {
+                try {
+                  final movies = await repository.getMoviesByGenres([genre.id]);
+                  moviesByGenre[genre.id] = movies;
+                } catch (e) {
+                  moviesByGenre[genre.id] = [];
+                }
+              }),
+            );
+          }(),
+      ]);
     } catch (e) {
       errorMessage = e.toString();
     } finally {
