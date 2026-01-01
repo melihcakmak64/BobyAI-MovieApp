@@ -109,6 +109,7 @@ abstract class _HomeViewModelBase with Store {
   @action
   void resetSearch() {
     searchQuery = null;
+    isSearching = false;
     searchResults = [];
     _debounceTimer?.cancel();
   }
