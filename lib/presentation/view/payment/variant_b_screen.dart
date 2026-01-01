@@ -75,7 +75,7 @@ class VariantB extends StatelessWidget {
                         children: viewModel.allFeatures.map((feature) {
                           return _buildChecklist(
                             feature.name,
-                            viewModel.activeFeatureIds.contains(feature.id),
+                            viewModel.isFeatureActive(feature.id),
                           );
                         }).toList(),
                       ),
