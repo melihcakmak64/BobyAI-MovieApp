@@ -120,7 +120,6 @@ class VariantB extends StatelessWidget {
 
                     12.verticalSpace,
                     CustomButton(
-                      isActive: false,
                       text: "Continue",
                       onPressed: () {
                         viewModel.purchaseSubscription();
