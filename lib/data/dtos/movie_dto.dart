@@ -15,11 +15,11 @@ class MovieDto {
 
   factory MovieDto.fromJson(Map<String, dynamic> json) {
     return MovieDto(
-      id: json['id'],
-      title: json['title'],
-      overview: json['overview'],
-      posterPath: json['poster_path'],
-      rating: (json['vote_average'] as num).toDouble(),
+      id: json['movie_id'],
+      title: json['movie_title'],
+      overview: json['movie_description'],
+      posterPath: json['poster_url'],
+      rating: (json['rating_score'] as num).toDouble(),
     );
   }
 }
