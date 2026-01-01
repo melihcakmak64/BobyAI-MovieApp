@@ -42,10 +42,7 @@ class VariantA extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  "MovieAI",
-                  style: TextStyles.font24Bold,
-                ),
+                Text("MovieAI", style: TextStyles.font24Bold),
                 16.verticalSpace,
 
                 // Table Container
@@ -53,7 +50,7 @@ class VariantA extends StatelessWidget {
                   builder: (context) {
                     return FeaturesTable(
                       features: viewModel.allFeatures,
-                      subscriptionPlan: viewModel.selectedPlan,
+                      activeFeatureIds: viewModel.activeFeatureIds,
                     );
                   },
                 ),
@@ -169,7 +166,6 @@ class VariantA extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildFooterLink(String text) {
     return InkWell(

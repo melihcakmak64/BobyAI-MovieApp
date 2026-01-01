@@ -8,12 +8,12 @@ import 'package:movie_app_task/domain/model/subscription_model.dart';
 
 class FeaturesTable extends StatelessWidget {
   final List<AppFeature> features;
-  final SubscriptionPlan subscriptionPlan;
+  final Set<int> activeFeatureIds;
 
   const FeaturesTable({
     super.key,
     required this.features,
-    required this.subscriptionPlan,
+    required this.activeFeatureIds,
   });
 
   @override
@@ -69,11 +69,9 @@ class FeaturesTable extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text('Pro', style: TextStyles.font16SemiBold),
-                  ...features.map(
-                    (e) => _FeatureIcon(
-                      isActive: subscriptionPlan.featureIds.contains(e.id),
-                    ),
-                  ),
+                  ...features.map((e) {
+                    return _FeatureIcon(isActive: activeFeatureIds.contains(e.id));
+                  }),
                 ],
               ),
             ),

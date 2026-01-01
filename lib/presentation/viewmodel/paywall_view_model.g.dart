@@ -9,13 +9,13 @@ part of 'paywall_view_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PaywallViewModel on _PaywallViewModelBase, Store {
-  Computed<int>? _$selectedPlanFeatureCountComputed;
+  Computed<Set<int>>? _$activeFeatureIdsComputed;
 
   @override
-  int get selectedPlanFeatureCount =>
-      (_$selectedPlanFeatureCountComputed ??= Computed<int>(
-        () => super.selectedPlanFeatureCount,
-        name: '_PaywallViewModelBase.selectedPlanFeatureCount',
+  Set<int> get activeFeatureIds =>
+      (_$activeFeatureIdsComputed ??= Computed<Set<int>>(
+        () => super.activeFeatureIds,
+        name: '_PaywallViewModelBase.activeFeatureIds',
       )).value;
 
   late final _$activeVariantAtom = Atom(
@@ -195,7 +195,7 @@ isFreeTrialEnabled: ${isFreeTrialEnabled},
 selectedPlan: ${selectedPlan},
 plans: ${plans},
 allFeatures: ${allFeatures},
-selectedPlanFeatureCount: ${selectedPlanFeatureCount}
+activeFeatureIds: ${activeFeatureIds}
     ''';
   }
 }
