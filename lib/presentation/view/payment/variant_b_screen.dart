@@ -65,10 +65,7 @@ class VariantB extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // App Name
-                    Text(
-                      "MovieAI",
-                      style: TextStyles.font32Bold,
-                    ),
+                    Text("MovieAI", style: TextStyles.font32Bold),
 
                     29.verticalSpace,
                     Observer(
@@ -95,7 +92,7 @@ class VariantB extends StatelessWidget {
                             subtitle: plan.subtitle,
                             price: plan.price,
                             badge: plan.badge,
-                            isSelected: viewModel.selectedPlan?.id == plan.id,
+                            isSelected: viewModel.selectedPlan.id == plan.id,
                             onTap: () => viewModel.selectPlan(plan),
                           );
                         }).toList(),
@@ -165,10 +162,7 @@ class VariantB extends StatelessWidget {
           size: 14.w,
         ),
         12.horizontalSpace,
-        Text(
-          title,
-          style: TextStyles.font14SemiBold,
-        ),
+        Text(title, style: TextStyles.font14SemiBold),
       ],
     );
   }
@@ -176,10 +170,7 @@ class VariantB extends StatelessWidget {
   Widget _buildFooterLink(String text) {
     return InkWell(
       onTap: () {},
-      child: Text(
-        text,
-        style: TextStyles.font8Regular,
-      ),
+      child: Text(text, style: TextStyles.font8Regular),
     );
   }
 }
