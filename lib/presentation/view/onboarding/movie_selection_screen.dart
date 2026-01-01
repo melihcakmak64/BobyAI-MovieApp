@@ -46,16 +46,14 @@ class MovieSelectionScreen extends StatelessWidget {
                       viewModel: viewModel,
                     ),
                   ),
-                  Observer(
-                    builder: (_) => CustomButton(
-                      text: "Continue",
-                      isDark: !isSelectionComlete,
-                      onPressed: isSelectionComlete
-                          ? () {
-                              context.router.push(GenreSelectionRoute());
-                            }
-                          : () {},
-                    ),
+                  CustomButton(
+                    text: "Continue",
+                    isDark: !isSelectionComlete,
+                    onPressed: isSelectionComlete
+                        ? () {
+                            context.router.push(GenreSelectionRoute());
+                          }
+                        : () {},
                   ),
                 ],
               ),
