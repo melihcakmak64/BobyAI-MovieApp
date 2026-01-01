@@ -111,13 +111,19 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                 left: 0,
                 right: 0,
                 child: Observer(
-                  builder: (_) => CustomButton(
-                    text: "Continue",
-                    onPressed: () {
-                      context.router.push(PaywallRoute());
-                    },
-                    isDark: viewModel.selectedGenres.length < 2,
-                  ),
+                  builder: (_) {
+                    final selectionCompleted =
+                        viewModel.selectedGenres.length == 2;
+                    return CustomButton(
+                      text: "Continue",
+                      onPressed: () {
+                        if (selectionCompleted) {
+                          context.router.push(PaywallRoute());
+                        }
+                      },
+                      isDark: !selectionCompleted,
+                    );
+                  },
                 ),
               ),
             ],
