@@ -65,7 +65,6 @@ abstract class _PaywallViewModelBase with Store {
     return selectedPlan.featureIds.toSet();
   }
 
-  @computed
   bool isFeatureActive(int featureId) {
     if (isFreeTrialEnabled) return true;
     return selectedPlan.featureIds.contains(featureId);
