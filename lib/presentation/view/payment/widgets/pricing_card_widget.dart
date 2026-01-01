@@ -72,7 +72,7 @@ class PricingCard extends StatelessWidget {
                     Row(
                       children: [Text(title, style: TextStyles.font16SemiBold)],
                     ),
-                    SizedBox(height: 2.h),
+                    4.verticalSpace,
                     Text(
                       subtitle,
                       style: TextStyles.font12Regular.copyWith(
@@ -102,10 +102,7 @@ class PricingCard extends StatelessWidget {
                     color: AppColors.redLight,
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  child: Text(
-                    badge!,
-                    style: TextStyles.font10Medium,
-                  ),
+                  child: Text(badge!, style: TextStyles.font10Medium),
                 ),
               ),
             ),

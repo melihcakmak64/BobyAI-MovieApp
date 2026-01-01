@@ -55,7 +55,7 @@ class VariantA extends StatelessWidget {
                   },
                 ),
 
-                SizedBox(height: 28.h),
+                28.verticalSpace,
 
                 // Free Trial Toggle
                 Container(
@@ -88,7 +88,7 @@ class VariantA extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 37.h),
+                37.verticalSpace,
 
                 Observer(
                   builder: (_) => Column(
@@ -127,7 +127,7 @@ class VariantA extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 12.h),
+                12.verticalSpace,
                 Observer(
                   builder: (_) {
                     return PulseAnimation(
