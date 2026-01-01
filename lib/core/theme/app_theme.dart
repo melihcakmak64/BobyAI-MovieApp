@@ -27,11 +27,4 @@ final ThemeData appTheme = ThemeData(
     bodyColor: AppColors.white,
     displayColor: AppColors.white,
   ),
-  appBarTheme: AppBarTheme(
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.light,
-    ),
-  ),
 );
