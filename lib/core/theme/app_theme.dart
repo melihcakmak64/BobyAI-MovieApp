@@ -22,11 +22,8 @@ final ThemeData appTheme = ThemeData(
       return AppColors.grayDark;
     }),
   ),
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(color: Colors.white),
-    displayMedium: TextStyle(color: Colors.white),
-    bodyLarge: TextStyle(color: Colors.white),
-    bodyMedium: TextStyle(color: Colors.white),
-    titleMedium: TextStyle(color: Colors.white),
-  ).apply(bodyColor: Colors.white, displayColor: Colors.white),
+  textTheme: ThemeData.light().textTheme.apply(
+    bodyColor: AppColors.white,
+    displayColor: AppColors.white,
+  ),
 );

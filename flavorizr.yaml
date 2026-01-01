@@ -1,0 +1,54 @@
+app:
+  android:
+    flavorDimensions: "environment"
+
+flavors:
+  dev:
+    app:
+      name: "MovieAI Dev"
+    android:
+      applicationId: "com.example.movieai.dev"
+      icon: "assets/icons/ic_app_dev.png"
+    ios:
+      bundleId: "com.example.movieai.dev"
+      icon: "assets/icons/ic_app_dev.png"
+
+  staging:
+    app:
+      name: "MovieAI Staging"
+    android:
+      applicationId: "com.example.movieai.staging"
+      icon: "assets/icons/ic_app_staging.png"
+    ios:
+      bundleId: "com.example.movieai.staging"
+      icon: "assets/icons/ic_app_staging.png"
+
+  prod:
+    app:
+      name: "MovieAI"
+    android:
+      applicationId: "com.example.movieai"
+      icon: "assets/icons/ic_app_prod.png"
+    ios:
+      bundleId: "com.example.movieai"
+      icon: "assets/icons/ic_app_prod.png"
+
+# Auto Setup
+instructions:
+  - assets:download
+  - assets:extract
+  - android:androidManifest
+  - android:buildGradle
+  - android:flavorizrGradle
+  - android:icons
+  - ios:xcconfig
+  - ios:buildTargets
+  - ios:schema
+  - ios:icons
+  - ios:plist
+  - ios:launchScreen
+  - flutter:flavors
+  - flutter:app
+  - flutter:pages
+  - flutter:main
+  - assets:clean

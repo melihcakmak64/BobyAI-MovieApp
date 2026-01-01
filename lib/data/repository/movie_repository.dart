@@ -14,10 +14,6 @@ class MovieRepository {
     final response = await _dioClient.dio.get(
       ApiConstants.popularMovies(page: page),
     );
-
-
-
-
     return (response.data['results'] as List)
         .map((e) => MovieDto.fromJson(e).toDomain())
         .toList();
