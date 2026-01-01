@@ -4,6 +4,27 @@
 
 ## Running the App
 
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://youtube.com/shorts/q56rS2CoUio">
+        <img src="https://img.youtube.com/vi/q56rS2CoUio/0.jpg" alt="Variant A" width="250"/>
+      </a>
+      <br>Variant A
+    </td>
+    <td align="center">
+      <a href="https://youtube.com/shorts/Ig5Wwzq4wJU">
+        <img src="https://img.youtube.com/vi/Ig5Wwzq4wJU/0.jpg" alt="Variant B" width="250"/>
+      </a>
+      <br>Variant B
+    </td>
+  </tr>
+</table>
+
+
+
+
 All of them only tested for android devices
 
 ```bash
