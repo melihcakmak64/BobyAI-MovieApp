@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 import 'package:movie_app_task/core/widgets/movie_poster_container.dart';
 import 'package:movie_app_task/domain/model/movie_model.dart';
 
@@ -14,7 +15,7 @@ class GenreSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: TextStyle(fontSize: 20.sp)),
+        Text(title, style: TextStyles.font20Regular),
         12.verticalSpace,
         SizedBox(
           height: 140.h,

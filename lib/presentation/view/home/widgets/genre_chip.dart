@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 
 class GenreChip extends StatelessWidget {
   final String label;
@@ -25,9 +26,8 @@ class GenreChip extends StatelessWidget {
           ],
           Text(
             label,
-            style: TextStyle(
+            style: TextStyles.font16Regular.copyWith(
               color: isActive ? AppColors.white : AppColors.black,
-              fontSize: 16.sp,
             ),
           ),
         ],

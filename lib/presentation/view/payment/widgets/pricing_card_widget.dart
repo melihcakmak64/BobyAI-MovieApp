@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 
 enum BadgePosition {
   topRight(Alignment.topRight),
@@ -69,32 +70,19 @@ class PricingCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      children: [
-                        Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                      children: [Text(title, style: TextStyles.font16SemiBold)],
                     ),
                     SizedBox(height: 2.h),
                     Text(
                       subtitle,
-                      style: TextStyle(color: Colors.white70, fontSize: 12.sp),
+                      style: TextStyles.font12Regular.copyWith(
+                        color: AppColors.grayDark,
+                      ),
                     ),
                   ],
                 ),
                 Spacer(),
-                Text(
-                  price,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text(price, style: TextStyles.font15Bold),
               ],
             ),
           ),
@@ -116,10 +104,7 @@ class PricingCard extends StatelessWidget {
                   ),
                   child: Text(
                     badge!,
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyles.font10Medium,
                   ),
                 ),
               ),

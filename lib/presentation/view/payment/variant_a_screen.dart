@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/constants/image_paths.dart';
 import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 import 'package:movie_app_task/core/widgets/animations/pulse_animation_wrapper.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/presentation/view/payment/widgets/pricing_card_widget.dart';
@@ -43,10 +44,7 @@ class VariantA extends StatelessWidget {
               children: [
                 Text(
                   "MovieAI",
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyles.font24Bold,
                 ),
                 16.verticalSpace,
 
@@ -77,10 +75,7 @@ class VariantA extends StatelessWidget {
                     children: [
                       Text(
                         "Enable Free Trial",
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: TextStyles.font16SemiBold,
                       ),
                       Observer(
                         builder: (_) => SizedBox(
@@ -130,7 +125,7 @@ class VariantA extends StatelessWidget {
                     6.horizontalSpace,
                     Text(
                       "Auto Renewable, Cancel Anytime",
-                      style: TextStyle(fontSize: 10.sp),
+                      style: TextStyles.font10Regular,
                     ),
                   ],
                 ),
@@ -179,7 +174,7 @@ class VariantA extends StatelessWidget {
   Widget _buildFooterLink(String text) {
     return InkWell(
       onTap: () {},
-      child: Text(text, style: TextStyle(fontSize: 8.sp)),
+      child: Text(text, style: TextStyles.font8Regular),
     );
   }
 }

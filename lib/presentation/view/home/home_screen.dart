@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 import 'package:movie_app_task/presentation/view/home/widgets/circle_movie_container.dart';
 import 'package:movie_app_task/presentation/view/home/widgets/movie_category_scroller.dart';
 import 'package:movie_app_task/presentation/viewmodel/home_view_model.dart';
@@ -54,14 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Error is occured!!',
-                      style: TextStyle(color: Colors.white, fontSize: 18.sp),
-                    ),
+                    Text('Error is occured!!', style: TextStyles.font18Medium),
                     8.verticalSpace,
                     Text(
                       homeViewModel.errorMessage!,
-                      style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                      style: TextStyles.font14Regular.copyWith(
+                        color: AppColors.gray,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     16.verticalSpace,
@@ -104,10 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "For You ⭐",
-            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-          ),
+          Text("For You ⭐", style: TextStyles.font24Bold),
           20.verticalSpace,
           SizedBox(
             height: 80.h,
@@ -115,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? Center(
                     child: Text(
                       'Movie not found',
-                      style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                      style: TextStyles.font14Regular,
                     ),
                   )
                 : ListView.separated(
@@ -142,10 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Text(
-            "Movies 🎬",
-            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-          ),
+          child: Text("Movies 🎬", style: TextStyles.font24Bold),
         ),
         16.verticalSpace,
         Padding(
@@ -176,7 +170,9 @@ class _SearchBar extends StatelessWidget {
             Expanded(
               child: Text(
                 "Search",
-                style: TextStyle(color: AppColors.grayDark),
+                style: TextStyles.font17Regular.copyWith(
+                  color: AppColors.grayDark,
+                ),
               ),
             ),
             Icon(Icons.mic, color: AppColors.grayDark),

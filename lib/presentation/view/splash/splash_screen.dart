@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/constants/image_paths.dart';
 import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
-import 'package:movie_app_task/presentation/view/onboarding/movie_selection_screen.dart';
 import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
 import 'package:movie_app_task/routes/app_router.dart';
 

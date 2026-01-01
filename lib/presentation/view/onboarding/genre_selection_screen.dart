@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 import 'package:movie_app_task/core/widgets/custom_button.dart';
 import 'package:movie_app_task/presentation/view/onboarding/widgets/genre_container.dart';
 import 'package:movie_app_task/presentation/viewmodel/movie_view_model.dart';
@@ -49,20 +50,14 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                           children: [
                             Text(
                               isCompleted ? "Thank you 👍" : "Welcome",
-                              style: TextStyle(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyles.font24Bold,
                             ),
                             12.verticalSpace,
                             Text(
                               isCompleted
                                   ? ""
                                   : "Choose your 2 favorite genres",
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: TextStyles.font20Medium,
                             ),
                           ],
                         ),

@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 import 'package:movie_app_task/core/widgets/movie_poster_container.dart';
 import 'package:movie_app_task/presentation/viewmodel/home_view_model.dart';
 
@@ -59,11 +60,13 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.search, size: 64.sp, color: Colors.grey),
+                  Icon(Icons.search, size: 64.sp, color: AppColors.gray),
                   16.verticalSpace,
                   Text(
                     "Search for movies",
-                    style: TextStyle(color: Colors.grey, fontSize: 16.sp),
+                    style: TextStyles.font16SemiBold.copyWith(
+                      color: AppColors.gray,
+                    ),
                   ),
                 ],
               ),
@@ -77,18 +80,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   Icon(Icons.movie_filter, size: 64.sp, color: Colors.grey),
                   16.verticalSpace,
-                  Text(
-                    "No results found",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text("No results found", style: TextStyles.font18Bold),
                   8.verticalSpace,
                   Text(
                     "Try a different search term",
-                    style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                    style: TextStyles.font14Regular,
                   ),
                 ],
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 import 'package:movie_app_task/domain/model/genre_model.dart';
 
 class GenreContainer extends StatelessWidget {
@@ -39,11 +40,7 @@ class GenreContainer extends StatelessWidget {
             child: Text(
               textAlign: TextAlign.center,
               genre.name,
-              style: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w600,
-                fontSize: 20.sp,
-              ),
+              style: TextStyles.font20SemiBold.copyWith(color: AppColors.black),
             ),
           ),
           if (isSelected)

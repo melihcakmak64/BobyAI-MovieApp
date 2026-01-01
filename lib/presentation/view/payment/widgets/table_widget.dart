@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/constants/image_paths.dart';
 import 'package:movie_app_task/core/helpers/image_helper.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
+import 'package:movie_app_task/core/theme/app_text_styles.dart';
 import 'package:movie_app_task/domain/model/subscription_model.dart';
 
 class FeaturesTable extends StatelessWidget {
@@ -31,13 +32,7 @@ class FeaturesTable extends StatelessWidget {
                 ...features.map(
                   (e) => Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Text(
-                      e.name,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    child: Text(e.name, style: TextStyles.font14SemiBold),
                   ),
                 ),
               ],
@@ -52,13 +47,7 @@ class FeaturesTable extends StatelessWidget {
                 spacing: 16.h,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    'Free',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  Text('Free', style: TextStyles.font16SemiBold),
                   ...features.map(
                     (e) => _FeatureIcon(isActive: e.isAvailableInFree),
                   ),
@@ -79,13 +68,7 @@ class FeaturesTable extends StatelessWidget {
                 spacing: 16.h,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    'Pro',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  Text('Pro', style: TextStyles.font16SemiBold),
                   ...features.map(
                     (e) => _FeatureIcon(
                       isActive: subscriptionPlan.featureIds.contains(e.id),
