@@ -28,9 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _init() async {
     await viewModel.fetchMovies();
-
+    await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
-
     context.router.replace(MovieSelectionRoute());
   }
 
