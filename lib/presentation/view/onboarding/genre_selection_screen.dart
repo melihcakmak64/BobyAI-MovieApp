@@ -121,7 +121,7 @@ class _GenreSelectionScreenState extends State<GenreSelectionScreen> {
                           context.router.push(PaywallRoute());
                         }
                       },
-                      isDark: !selectionCompleted,
+                      isActive: selectionCompleted,
                     );
                   },
                 ),

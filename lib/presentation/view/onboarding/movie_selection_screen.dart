@@ -48,7 +48,7 @@ class MovieSelectionScreen extends StatelessWidget {
                   ),
                   CustomButton(
                     text: "Continue",
-                    isDark: !isSelectionComlete,
+                    isActive: isSelectionComlete,
                     onPressed: isSelectionComlete
                         ? () {
                             context.router.push(GenreSelectionRoute());
