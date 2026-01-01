@@ -11,43 +11,14 @@ class MovieRepository {
   final DioClient _dioClient = DioClient();
 
   Future<List<MovieModel>> getPopularMovies({int page = 1}) async {
- /*   final response = await _dioClient.dio.get(
+    final response = await _dioClient.dio.get(
       ApiConstants.popularMovies(page: page),
-    );*/
-
-    const mockApiV2Response = {
-  "results": [
-    {
-      "movie_id": 1242898,
-      "movie_title": "Predator: Badlands",
-      "movie_description":
-          "Cast out from his clan, a young Predator finds an unlikely ally in a damaged android and embarks on a treacherous journey in search of the ultimate adversary.",
-      "poster_url": "/ef2QSeBkrYhAdfsWGXmp0lvH0T1.jpg",
-      "rating_score": 7.323,
-      "released_at": "2025-11-05",
-      "genres": [28, 878, 12],
-      "popularity_score": 116.9332,
-      "adult": false,
-      "video": false
-    },
-    {
-      "movie_id": 1419406,
-      "movie_title": "The Shadow's Edge",
-      "movie_description":
-          "Macau Police brings the tracking expert police officer out of retirement to help catch a dangerous group of professional thieves.",
-      "poster_url": "/e0RU6KpdnrqFxDKlI3NOqN8nHL6.jpg",
-      "rating_score": 6.7,
-      "released_at": "2025-08-16",
-      "genres": [28, 80, 53],
-      "popularity_score": 116.4061,
-      "adult": false,
-      "video": false
-    }
-  ]
-};
+    );
 
 
-    return (mockApiV2Response['results'] as List)
+
+
+    return (response.data['results'] as List)
         .map((e) => MovieDto.fromJson(e).toDomain())
         .toList();
   }
