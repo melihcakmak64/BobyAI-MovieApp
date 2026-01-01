@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_app_task/core/theme/app_colors.dart';
 
 final ThemeData appTheme = ThemeData(
-  scaffoldBackgroundColor: const Color.fromRGBO(15, 14, 14, 1),
+  scaffoldBackgroundColor: AppColors.black,
   fontFamily: "Inter",
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
@@ -25,5 +26,12 @@ final ThemeData appTheme = ThemeData(
   textTheme: ThemeData.light().textTheme.apply(
     bodyColor: AppColors.white,
     displayColor: AppColors.white,
+  ),
+  appBarTheme: AppBarTheme(
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.light,
+    ),
   ),
 );

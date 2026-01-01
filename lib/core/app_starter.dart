@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:movie_app_task/core/config/env_loader.dart';
 import 'package:movie_app_task/core/config/flavors.dart';
 import 'package:movie_app_task/core/di/get_it.dart';

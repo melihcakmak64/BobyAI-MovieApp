@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app_task/core/app_starter.dart';
 import 'package:movie_app_task/core/di/get_it.dart';
@@ -21,12 +22,14 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-
       builder: (context, child) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: appTheme,
-          routerConfig: appRouter.config(),
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            theme: appTheme,
+            routerConfig: appRouter.config(),
+          ),
         );
       },
     );
