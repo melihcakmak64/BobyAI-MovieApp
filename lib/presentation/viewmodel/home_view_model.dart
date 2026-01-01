@@ -6,6 +6,8 @@ import 'package:movie_app_task/data/repository/movie_repository.dart';
 
 part 'home_view_model.g.dart';
 
+enum SearchState { idle, searching, success, empty, error }
+
 class HomeViewModel = _HomeViewModelBase with _$HomeViewModel;
 
 abstract class _HomeViewModelBase with Store {
@@ -19,7 +21,7 @@ abstract class _HomeViewModelBase with Store {
   bool isLoading = false;
 
   @observable
-  bool isSearching = false;
+  SearchState searchState = SearchState.idle;
 
   @observable
   List<MovieModel> movies = [];
@@ -54,19 +56,21 @@ abstract class _HomeViewModelBase with Store {
   Future<void> _handleSearch(String? query) async {
     if (query == null || query.isEmpty) {
       searchResults = [];
-      isSearching = false;
+      searchState = SearchState.idle;
       return;
     }
 
-    isSearching = true;
+    searchState = SearchState.searching;
 
     try {
       searchResults = await repository.searchMovies(query);
+      searchState = searchResults.isEmpty
+          ? SearchState.empty
+          : SearchState.success;
     } catch (e) {
       searchResults = [];
       errorMessage = e.toString();
-    } finally {
-      isSearching = false;
+      searchState = SearchState.error;
     }
   }
 
@@ -109,7 +113,7 @@ abstract class _HomeViewModelBase with Store {
   @action
   void resetSearch() {
     searchQuery = null;
-    isSearching = false;
+    searchState = SearchState.idle;
     searchResults = [];
     _debounceTimer?.cancel();
   }

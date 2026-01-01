@@ -46,65 +46,73 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: AppColors.black,
       body: Observer(
         builder: (_) {
-          if (homeViewModel.isSearching) {
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            );
-          }
-
-          final results = homeViewModel.searchResults;
-          final query = homeViewModel.searchQuery ?? "";
-
-          if (query.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search, size: 64.sp, color: AppColors.gray),
-                  16.verticalSpace,
-                  Text(
-                    "Search for movies",
-                    style: TextStyles.font16SemiBold.copyWith(
+          switch (homeViewModel.searchState) {
+            case SearchState.idle:
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.search, size: 64.sp, color: AppColors.gray),
+                    16.verticalSpace,
+                    Text(
+                      "Search for movies",
+                      style: TextStyles.font16SemiBold.copyWith(
+                        color: AppColors.gray,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            case SearchState.searching:
+              return const Center(
+                child: CircularProgressIndicator(color: AppColors.white),
+              );
+            case SearchState.success:
+              final results = homeViewModel.searchResults;
+              return GridView.builder(
+                padding: EdgeInsets.all(16.w),
+                itemCount: results.length,
+                itemBuilder: (_, index) {
+                  final movie = results[index];
+                  return MoviePosterContainer(imagePath: movie.posterPath);
+                },
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 120.w,
+                  mainAxisSpacing: 16.w,
+                  crossAxisSpacing: 16.w,
+                  childAspectRatio: 100 / 140,
+                ),
+              );
+            case SearchState.empty:
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.movie_filter,
+                      size: 64.sp,
                       color: AppColors.gray,
                     ),
+                    16.verticalSpace,
+                    Text("No results found", style: TextStyles.font18Bold),
+                    8.verticalSpace,
+                    Text(
+                      "Try a different search term",
+                      style: TextStyles.font14Regular,
+                    ),
+                  ],
+                ),
+              );
+            case SearchState.error:
+              return Center(
+                child: Text(
+                  homeViewModel.errorMessage ?? "An error occurred",
+                  style: TextStyles.font16SemiBold.copyWith(
+                    color: AppColors.redLight,
                   ),
-                ],
-              ),
-            );
+                ),
+              );
           }
-
-          if (results.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.movie_filter, size: 64.sp, color: Colors.grey),
-                  16.verticalSpace,
-                  Text("No results found", style: TextStyles.font18Bold),
-                  8.verticalSpace,
-                  Text(
-                    "Try a different search term",
-                    style: TextStyles.font14Regular,
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return GridView.builder(
-            padding: EdgeInsets.all(16.w),
-            itemCount: results.length,
-            itemBuilder: (_, index) {
-              final movie = results[index];
-              return MoviePosterContainer(imagePath: movie.posterPath);
-            },
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 120.w,
-              mainAxisSpacing: 16.w,
-              crossAxisSpacing: 16.w,
-              childAspectRatio: 100 / 140,
-            ),
-          );
         },
       ),
     );

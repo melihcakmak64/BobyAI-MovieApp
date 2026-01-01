@@ -45,21 +45,21 @@ mixin _$HomeViewModel on _HomeViewModelBase, Store {
     });
   }
 
-  late final _$isSearchingAtom = Atom(
-    name: '_HomeViewModelBase.isSearching',
+  late final _$searchStateAtom = Atom(
+    name: '_HomeViewModelBase.searchState',
     context: context,
   );
 
   @override
-  bool get isSearching {
-    _$isSearchingAtom.reportRead();
-    return super.isSearching;
+  SearchState get searchState {
+    _$searchStateAtom.reportRead();
+    return super.searchState;
   }
 
   @override
-  set isSearching(bool value) {
-    _$isSearchingAtom.reportWrite(value, super.isSearching, () {
-      super.isSearching = value;
+  set searchState(SearchState value) {
+    _$searchStateAtom.reportWrite(value, super.searchState, () {
+      super.searchState = value;
     });
   }
 
@@ -197,7 +197,7 @@ mixin _$HomeViewModel on _HomeViewModelBase, Store {
     return '''
 searchQuery: ${searchQuery},
 isLoading: ${isLoading},
-isSearching: ${isSearching},
+searchState: ${searchState},
 movies: ${movies},
 recommendedMovies: ${recommendedMovies},
 searchResults: ${searchResults},
