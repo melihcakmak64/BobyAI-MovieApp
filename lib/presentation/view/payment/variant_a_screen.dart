@@ -100,7 +100,7 @@ class VariantA extends StatelessWidget {
                         price: plan.price,
                         badge: plan.badge,
                         badgePosition: BadgePosition.topCenter,
-                        isSelected: viewModel.selectedPlan?.id == plan.id,
+                        isSelected: viewModel.selectedPlan.id == plan.id,
                         onTap: () => viewModel.selectPlan(plan),
                       );
                     }).toList(),
